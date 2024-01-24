@@ -1,0 +1,8 @@
+const express = require("express");
+router = express.Router();
+
+router.get("/pikoset", async (req, res) => {
+    res.json({ "cdn": "http://localhost:3002/cdn"})
+});
+
+module.exports = router;

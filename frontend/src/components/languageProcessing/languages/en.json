@@ -1,0 +1,23 @@
+{
+    "home.about_text": "give the Internet your thoughts and actions in any form",
+    "home.postChibi": "express your thoughts in a post",
+    "home.fileChibi": "share files",
+    "home.messageChibi": "exchange messages securely",
+    "home.piko-trust_text": "protect your privacy from third parties",
+
+    "auth.ForgotPasswordButton": "Forgot your password?",
+    "auth.loginButton": "login",
+    "auth.passwordText": "password",
+    "auth.loginText": "username",
+    "auth.signIn-text": "Don't have an account yet?",
+    "auth.signIn-button": "Sign up!",
+
+    "auth.newPasswordText": "strong password",
+    "auth.newLoginText": "username",
+    "auth.newMailText": "email",
+    "auth.newNickText": "nickname",
+    "auth.signInButton": "sign in",
+    "auth.somethingWrong": "something goes wrong :/",
+    "auth.loginSomethingWrong": "It seems the login information is incorrect",
+    "auth.fetch-loader": "trying make a deal with a server"
+}

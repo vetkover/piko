@@ -1,0 +1,23 @@
+{
+    "home.about_text": "подарите интернету свои мысли и действия в любой их форме",
+    "home.postChibi": "выразите свою мысль в посте",
+    "home.fileChibi": "делитесь файлами",
+    "home.messageChibi": "обменивайтесь сообщениями безопастно",
+    "home.piko-trust_text": "защитите свою приватность от третьих лиц",
+
+    "auth.ForgotPasswordButton": "забыли свой пароль?",
+    "auth.loginButton": "войти",
+    "auth.passwordText": "пароль",
+    "auth.loginText": "логин",
+    "auth.signIn-text": "Ещё нет учётной записи?",
+    "auth.signIn-button": "Зарегистрируйтесь!",
+
+    "auth.newPasswordText": "уверенный в себе пароль",
+    "auth.newLoginText": "логин",
+    "auth.newMailText": "электронная почта",
+    "auth.newNickText": "имя пользователя",
+    "auth.signInButton": "зарегистрироваться",
+    "auth.somethingWrong": "что-то пошло не так :/",
+    "auth.loginSomethingWrong": "кажется данные некорректные",
+    "auth.fetch-loader": "пытаемся договорится с сервером"
+}
