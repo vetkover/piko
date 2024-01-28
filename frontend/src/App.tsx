@@ -1,38 +1,30 @@
 import React, { Component, useEffect } from 'react';
 import AppRoutes from './AppRoutes';
 import { BrowserRouter, Route, Routes, Router } from "react-router-dom";
-
-
-declare global {
-  var pikoSet: any;
-  var api: any;
-  var whoami:any;
-}
-global.whoami = {}
-global.api = "http://localhost:3001"
+import { useDispatch, useSelector } from 'react-redux';
 
 const App = () => {
 
+  const dispatch = useDispatch()
+  const pikoSelector = useSelector((state: any)=> state.pikoset)
     useEffect(() => {
       const fetchData1 = async () => {
-        fetch(`${global.api}/api/pikoset`)
+        fetch(`${pikoSelector.api}/api/pikoset`)
           .then((response) => response.json())
           .then((data) => {
-            global.pikoSet = data;
+            dispatch({type:"PIKOSET", payload: data})
           })
           .catch((error) => console.error("error:", error));
       };
 
       const fetchData2 = async () => {
-        if(whoami){} else {
-        fetch(`${global.api}/api/whoami`)
+        fetch(`${pikoSelector.api}/api/user/whoami`, { credentials: 'include'})
           .then((response) => response.json())
           .then((data) => {
-            global.whoami = data;
+            console.log(dispatch({type: "WHOAMI", payload: data}))
           })
-  
+          
           .catch((error) => console.error("error:", error));
-      };
     }
     fetchData1();
     fetchData2();

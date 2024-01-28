@@ -12,6 +12,7 @@ import loading from './loading.svg';
 import approve from './approve.svg';
 
 import backgroundVideo from './backgroundVideo.mp4'
+import { useSelector } from "react-redux";
 
 const VideoCanvas = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -103,7 +104,7 @@ function Auth() {
   const passwordInput = useRef<HTMLInputElement>(null);
   const passwordText = useRef<HTMLAnchorElement>(null);
   const navigate = useNavigate();
-
+  const pikoSelector = useSelector((state: any)=> state.pikoset)
   const loginSomethingWrong = useRef<any>(null);
   function loginFetch() {
 
@@ -112,7 +113,7 @@ function Auth() {
       fetchLoaderRef.current.style.display = "flex";
     }
     
-    fetch(`${global.api}/api/auth/login`, {
+    fetch(`${pikoSelector.api}/api/auth/login`, {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json'
@@ -349,7 +350,7 @@ function Auth() {
       fetchLoaderRef.current.style.display = "flex";
     }
     
-    fetch(`${global.api}/api/auth/signin`, {
+    fetch(`${pikoSelector.api}/api/auth/signin`, {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json'
@@ -406,7 +407,7 @@ function isMailUnique() {
       mailStatus.current.style.animation = "rotateLoading 1s infinite linear"
     }
 
-    fetch(`${global.api}/api/auth/ismailunique`, {
+    fetch(`${pikoSelector.api}/api/auth/ismailunique`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -463,7 +464,7 @@ async function isUsernameUnique() {
       usernameStatus.current.style.animation = "rotateLoading 1s infinite linear"
     }
 
-    const response = await fetch(`${global.api}/api/auth/isusernameunique`, {
+    const response = await fetch(`${pikoSelector.api}/api/auth/isusernameunique`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -521,7 +522,7 @@ function isNicknameUnique() {
       nicknameStatus.current.style.animation = "rotateLoading 1s infinite linear"
     }
 
-    fetch(`${global.api}/api/auth/isnicknameunique`, {
+    fetch(`${pikoSelector.api}/api/auth/isnicknameunique`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
