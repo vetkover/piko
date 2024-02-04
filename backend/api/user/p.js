@@ -11,6 +11,7 @@ router.get("/p/:username", async (req, res) => {
 
     let obj = {}
 
+    obj.status = "ok"
     obj.username = data.username
     obj.nickname = data.nickname
     obj.avatar = data.avatar
@@ -18,6 +19,10 @@ router.get("/p/:username", async (req, res) => {
     obj.baner = data.baner
 
     res.json(obj);
-}catch(e){}});
+}catch(e){
+    let obj = {}
+    obj.status = "notExist"
+    res.json(obj);
+}});
 
 module.exports = router;

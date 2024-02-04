@@ -6,7 +6,6 @@ const userData = require('../../components/mongoDB/userData.js')
 
 router.get("/whoami", async (req, res) => {
     const cookie = parseCookies (req.headers.cookie);
-    console.log(cookie)
     if(cookie){
     const DBuserData = await userData(cookie.token);
 
@@ -22,8 +21,9 @@ router.get("/whoami", async (req, res) => {
     )
     }
 } else {
-    res.json(
-        message = "notAuth"
+    res.json({
+        message: "notAuth"
+    }
     )
 }
 });

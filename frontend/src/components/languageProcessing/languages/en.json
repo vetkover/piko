@@ -19,5 +19,7 @@
     "auth.signInButton": "sign in",
     "auth.somethingWrong": "something goes wrong :/",
     "auth.loginSomethingWrong": "It seems the login information is incorrect",
-    "auth.fetch-loader": "trying make a deal with a server"
+    "auth.fetch-loader": "trying make a deal with a server",
+
+    "p.userNotFound": "not exist"
 }

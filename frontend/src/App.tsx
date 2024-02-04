@@ -7,7 +7,7 @@ const App = () => {
 
   const dispatch = useDispatch()
   const pikoSelector = useSelector((state: any)=> state.pikoset)
-    useEffect(() => {
+    useEffect(() =>{
       const fetchData1 = async () => {
         fetch(`${pikoSelector.api}/api/pikoset`)
           .then((response) => response.json())
@@ -21,7 +21,7 @@ const App = () => {
         fetch(`${pikoSelector.api}/api/user/whoami`, { credentials: 'include'})
           .then((response) => response.json())
           .then((data) => {
-            console.log(dispatch({type: "WHOAMI", payload: data}))
+            dispatch({type: "WHOAMI", payload: data})
           })
           
           .catch((error) => console.error("error:", error));

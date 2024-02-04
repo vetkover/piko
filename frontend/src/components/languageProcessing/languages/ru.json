@@ -19,5 +19,7 @@
     "auth.signInButton": "зарегистрироваться",
     "auth.somethingWrong": "что-то пошло не так :/",
     "auth.loginSomethingWrong": "кажется данные некорректные",
-    "auth.fetch-loader": "пытаемся договорится с сервером"
+    "auth.fetch-loader": "пытаемся договорится с сервером",
+
+    "p.userNotFound": "пользователя не существует"
 }

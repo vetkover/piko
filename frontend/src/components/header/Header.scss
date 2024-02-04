@@ -26,6 +26,7 @@
       grid-template-rows: auto;
       grid-column-gap: 60px;
       justify-content: end;
+      position: inherit;
 
 
 
@@ -36,11 +37,21 @@
         backdrop-filter: blur(10px);
         justify-content: center;
         align-items: center;
-
+        overflow: hidden;
+        padding: 0;
         .buttonIco{
           width: 87px;
           height: 79px;
         }
+
+        .userAvatar{
+          
+          position: relative;
+          width: 70%;
+          height: 100%;
+          border-radius: 50%;
+        }
+
       }
     }
 
