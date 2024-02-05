@@ -37,6 +37,57 @@ function ProfileNotExistContainer(userData: any){
 
 function ProfilePosts(){
 
+  const {username} = useParams()
+  const pikoSelector = useSelector((state: any) => state.pikoset)
+
+  const [userPosts, setUserPosts] = useState<any>(null)
+
+  useEffect(() => {
+    const fetchData = async () => {
+
+      fetch(`${pikoSelector.api}/api/post/posts/${username}`)
+        .then((response) => response.json())
+        .then((data) => {
+          setUserPosts(data);
+        })
+        .catch((error) => console.error("error:", error));
+    ;
+    
+  }
+  fetchData();
+  }, [])
+
+
+  function postsArray() {
+    const posts = userPosts?.posts.map((obj: any) => (
+      <div className="post" key={obj.id}>
+        <div className="left-line">
+          <img className="avatar" src={avatar404} />
+        </div>
+  
+        <div className="middle-line">
+          <div className="author-line">
+            <div className="username">{obj.author}</div>
+            <div className="username">{obj.date}</div>
+          </div>
+  
+          <div className="post-data">
+            <div className="post-text">{obj.text}</div>
+  
+            <div className="post-images">
+              {obj.images &&
+                obj.images.map((image: string, index: number) => (
+                  <img key={index} src={image} alt={`post-image-${index}`} />
+                ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    ));
+  
+    return posts;
+  }
+
   return (
     <React.Fragment>
       <div className="posts-container">
@@ -48,33 +99,9 @@ function ProfilePosts(){
 
           <div className="posts-content">
           
-          <div className="post">
-          <div className="left-line">
-            <img className="avatar" src={avatar404}/>
-            </div>
 
-            <div className="middle-line">
-              <div className="author-line">
-            <div className="username"> username </div>  
-            <div className="username"> 17.24.2024 </div>  
-            </div>
-
-            <div className="post-data"> 
-
-              <div className="post-text">
-                asdwwqeqweqwe asd asd asgy hjpqwiuid qw d qwo iuiyugjhbkjl g vb nj uy gfv bnjk iu yg  nm lo iuy tg fd k jh gt y ui ol kjhgfdertyu jko
-              </div>
-              
-              <div className="post-images">
-                <img src={avatar404}/> 
-                <img src={avatar404}/> 
-
-              </div>
-
-            </div>
-            </div>
-            </div>
-
+          {postsArray()}
+            
             
           </div>
           

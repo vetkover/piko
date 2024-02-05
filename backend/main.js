@@ -10,6 +10,8 @@ const isMailUnique = require('./api/auth/isMailUnique.js')
 const isUsernameUnique = require('./api/auth/isUsernameUnique.js')
 const isNicknameUnique = require('./api/auth/isNicknameUnique.js')
 
+const posts = require('./api/post/posts.js')
+
 const pikoSet = require('./api/stuff/pikoset')
 const p =require('./api/user/p.js')
 
@@ -30,6 +32,7 @@ app.use('/api/auth', isNicknameUnique)
 app.use('/api/auth', login)
 app.use('/api/', pikoSet)
 app.use('/api', p)
+app.use('/api/post/', posts)
 
 app.listen(PORT, () =>{
     console.log(`server is started on port ${PORT}`)
