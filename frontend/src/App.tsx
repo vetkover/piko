@@ -1,6 +1,6 @@
-import React, { Component, useEffect } from 'react';
+import { useEffect } from 'react';
 import AppRoutes from './AppRoutes';
-import { BrowserRouter, Route, Routes, Router } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
 
 const App = () => {

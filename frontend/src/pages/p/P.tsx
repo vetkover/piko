@@ -57,7 +57,6 @@ function ProfilePosts(){
   fetchData();
   }, [])
 
-
   function postsArray() {
 
     if(userPosts?.posts){
@@ -102,17 +101,11 @@ function ProfilePosts(){
     <React.Fragment>
       <div className="posts-container">
         <div className="posts">
-
           <div className="post-header">
                   <a>{getText("p.posts")}</a> { (userPosts?.count)? userPosts?.count: 0}
           </div>
-
           <div className="posts-content">
-          
-
           {postsArray()}
-            
-            
           </div>
           
         </div>
@@ -124,10 +117,10 @@ function ProfilePosts(){
 function P() {
   const pikoSelector = useSelector((state: any) => state.pikoset)
   const whoamiSelector = useSelector((state: any) => state.whoami)
-  const [itsOwnerPage, setItsOwnerPage] = useState<any>(null)
-
-  //const navigate = useNavigate();
   const { username } = useParams();
+  const [itsOwnerPage, setItsOwnerPage] = useState<any>(null)
+  //const navigate = useNavigate();
+  
   const [userData, setUserData] = useState<any>(null);
   useEffect(() => {
     const fetchData = async () => {
@@ -136,15 +129,16 @@ function P() {
         .then((response) => response.json())
         .then(async (data) => {
           setUserData(data);
-          console.log(whoamiSelector) // редукс кажется забыл что он подписал whoamiSelector на обнолвение при изменении стора :(
-
         })
         .catch((error) => console.error("error:", error));
     };
     
   }
   fetchData();
+  setItsOwnerPage(whoamiSelector?.username == username ?  true : false)
   }, [userData])
+
+
 
   function ProfileContainer(){
 

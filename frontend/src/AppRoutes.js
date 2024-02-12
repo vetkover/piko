@@ -6,7 +6,7 @@ import P from './pages/p/P'
 const AppRoutes = [
 {
   index: true,
-  element: <Auth />
+  element: <Profile />
 },
 {
     path: "home",

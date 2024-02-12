@@ -9,6 +9,6 @@ function parseCookies(cookieString) {
     });
   
     return cookieObject;
-  }catch (e){}
+  }catch (e){return false}
 } 
 module.exports = parseCookies;

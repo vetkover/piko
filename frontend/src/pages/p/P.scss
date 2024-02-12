@@ -1,20 +1,16 @@
 .profile-container{
-    width: 100%;
+    margin-left: 25.5%;
+    width: 925px;
     height: auto;
-    display: grid;
-    grid-template-columns: repeat(8,230px);
-    grid-template-rows: repeat(2, auto);
-    justify-content: center;
+    display: flex;
+    justify-self: center;
     .profile{
-        grid-column: 3/7;
-        grid-row: 1;
         display: flex;
         background-color: #2a2e34;
 
 
         .about-user{
             border: #3c3f43 3px solid;
-            margin-top: 85px;
             width: 100%;
             height: auto;
             position: relative;
@@ -83,16 +79,11 @@
 
 
 .posts-container{
-    width: 100%;
+    margin-left: 25.5%;
+    width: 925px;
     height: auto;
-    display: grid;
-    grid-template-columns: repeat(8,230px);
-    grid-template-rows: repeat(2, auto);
-    justify-content: center;
 
     .posts{
-        grid-column: 3/7;
-        grid-row: 1;
         background-color: #2a2e34;
         border-left: #3c3f43 3px solid ;
         border-right: #3c3f43 3px solid ;
@@ -112,14 +103,12 @@
         }
 
         .posts-content{
-            grid-column: 1;
             
             width: 100%;
             height: auto;
             display: flex;
             position: relative;
             background-color: #26282b;
-
             display: flex;
             flex-direction: column;
 

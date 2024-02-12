@@ -7,7 +7,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #2a2e34;
+  background-color: #1d1d20;
 }
 
 code {
@@ -16,4 +16,16 @@ code {
 }
 img:not([src]) {
   display: none;
+}
+
+button:focus {
+  outline: none;
+}
+
+button:active {
+  border: none;
+}
+
+button {
+  border: none;
 }

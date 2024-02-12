@@ -1,74 +1,36 @@
-.piko-header {
-  z-index: 1000;
+.piko-menu{
+  display: flex;
   position: fixed;
-  width: 100%;
-  top: 0;
-  background-color: rgba(216, 205, 205, 0.308);
-  
-  &-options {
-    display: grid;
-    grid-template-columns: auto repeat(4, auto);
-    grid-template-rows: 1px;
-    width: auto;
-    height: 85px;
+  width: 25.5%;
+  height: 100%;
+  justify-content: flex-end;
 
-    .piko-header-logo {
-      grid-column: 1;
-      width: 195px;
-      height: 85px;
-      background-color: green;
-    }
-    .piko-header-buttons {
-      grid-column: 4 / 6;
-      grid-row: 1;
+  .piko-options{
+    display: flex;
+    justify-content: flex-end;
+    width: 265px;
+
+    .piko-option-container{
       display: grid;
-      grid-template-columns: repeat(7, 130px);
-      grid-template-rows: auto;
-      grid-column-gap: 60px;
-      justify-content: end;
-      position: inherit;
-
-
-
-      .piko-header-button {
-        display: flex;
-        height: 85px;
-        background-color: rgba(255, 255, 255, 0.283);
-        backdrop-filter: blur(10px);
-        justify-content: center;
-        align-items: center;
-        overflow: hidden;
-        padding: 0;
-        .buttonIco{
-          width: 87px;
-          height: 79px;
-        }
+      grid-template-columns: 70px 1fr;
+      width: 100%;
+      height: 65px;
+      background-color: transparent;
+      align-items: center;
+      justify-items: start;
 
         .userAvatar{
-          
-          position: relative;
-          width: 70%;
-          height: 100%;
           border-radius: 50%;
+          height: 60px;
+          width: 60px;
         }
 
-      }
-    }
-
-    #button1 {
-      grid-column: 4;
-    }
-
-    #button2 {
-      grid-column: 5;
-    }
-
-    #button3 {
-      grid-column: 6;
-    }
-
-    #button4 {
-      grid-column: 7;
+        .username{
+          color: white;
+          font-size: 20px;
+          margin-left: 5px;
+          
+        }
     }
   }
 }

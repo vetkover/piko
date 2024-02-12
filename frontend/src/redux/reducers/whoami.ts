@@ -1,5 +1,8 @@
 const states = {
-
+    username: "",
+    nickname: "",
+    email: "",
+    avatar:"",
     stateWasUpdated: false
 
 }

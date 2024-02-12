@@ -7,14 +7,16 @@ function Profile() {
   const navigate = useNavigate();
 
   const whoami = useSelector((state: any) => state.whoami)
+  
   useEffect(()=>{
-          if (whoami.nickname) {
-            navigate(`/p/${whoami.nickname}`);
-          } else {
-            navigate(`/auth`);
-          }
-        }
-  )
+    console.log(whoami)
+    if (whoami.username) {
+      navigate(`/p/${whoami.username}`);
+    } else if (whoami.stateWasUpdated) {
+      navigate(`/auth`);
+    }
+  }, [whoami])
+  
   return <div></div>;
 }
 
