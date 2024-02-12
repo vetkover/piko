@@ -21,5 +21,8 @@
     "auth.loginSomethingWrong": "It seems the login information is incorrect",
     "auth.fetch-loader": "trying make a deal with a server",
 
-    "p.userNotFound": "not exist"
+    "p.userNotFound": "not exist",
+    "p.postsIsEmpty": "this user hasn't posted anything yet",
+    "p.posts": "posts:"
+    
 }

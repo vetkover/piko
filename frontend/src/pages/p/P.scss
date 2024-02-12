@@ -94,7 +94,9 @@
         grid-column: 3/7;
         grid-row: 1;
         background-color: #2a2e34;
-        border: #3c3f43 3px solid;
+        border-left: #3c3f43 3px solid ;
+        border-right: #3c3f43 3px solid ;
+        border-bottom: #3c3f43 3px solid ;
         
 
         .post-header{
@@ -102,7 +104,7 @@
             padding-bottom: 10px;
             background-color: #26282b;
             font-size: 25px;
-            border-top: #3c3f43 3px solid;
+
             border-bottom: #3c3f43 3px solid;
             a{
                 margin-left: 20px;
@@ -120,6 +122,12 @@
 
             display: flex;
             flex-direction: column;
+
+            .post-is-empty{
+                color: white;
+                display: flex;
+                justify-content: center;
+            }
 
             .post{
                 display: grid;
@@ -147,8 +155,6 @@
                 .post-data{
                     display: flex;
                     flex-direction: column;
-
-                    .post-text{}
 
                     .post-images{
                         display: flex;

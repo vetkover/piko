@@ -1,8 +1,6 @@
 const states = {
-    username: "",
-    nickname: "",
-    email: "",
-    avatar:""
+
+    stateWasUpdated: false
 
 }
 
@@ -13,7 +11,9 @@ export const whoami = (state = states, action: { type: any; payload: any; }) =>{
             username: action.payload.username,
             nickname: action.payload.nickname,
             email: action.payload.email,
-            avatar: action.payload.avatar }
+            avatar: action.payload.avatar,
+            stateWasUpdated:true 
+        }
         break;
 
         default:

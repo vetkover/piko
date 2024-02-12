@@ -11,7 +11,7 @@ router.get("/posts/:username", async (req, res) => {
     let obj = {}
 
     obj.posts = data.posts
-
+    obj.count = (data.posts).length
     res.json(obj);
 }catch(e){
     let obj = {}

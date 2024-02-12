@@ -3,11 +3,11 @@ import { getText } from "../../components/languageProcessing/localize";
 import { useNavigate, useParams } from "react-router";
 import "./P.scss";
 import { useSelector } from "react-redux";
-import temmi from './Temmi.png';
+
 import baner404 from './404baner.png';
 import avatar404 from './404avatar.png';
 
-function ProfileNotExistContainer(userData: any){
+function ProfileNotExistContainer(){
   const {username} = useParams()
   return (
     <div className="profile-container">
@@ -59,6 +59,9 @@ function ProfilePosts(){
 
 
   function postsArray() {
+
+    if(userPosts?.posts){
+
     const posts = userPosts?.posts.map((obj: any) => (
       <div className="post" key={obj.id}>
         <div className="left-line">
@@ -77,15 +80,22 @@ function ProfilePosts(){
             <div className="post-images">
               {obj.images &&
                 obj.images.map((image: string, index: number) => (
-                  <img key={index} src={image} alt={`post-image-${index}`} />
+                  <img key={index} src={image} />
                 ))}
             </div>
           </div>
         </div>
       </div>
-    ));
-  
+    ))
     return posts;
+    } else {
+      return (
+        <div className="post-is-empty">
+          {getText("p.postsIsEmpty")}
+        </div>
+      )
+    }
+
   }
 
   return (
@@ -94,7 +104,7 @@ function ProfilePosts(){
         <div className="posts">
 
           <div className="post-header">
-                  <a>posts: 0</a>
+                  <a>{getText("p.posts")}</a> { (userPosts?.count)? userPosts?.count: 0}
           </div>
 
           <div className="posts-content">
@@ -112,9 +122,9 @@ function ProfilePosts(){
 }
 
 function P() {
-
   const pikoSelector = useSelector((state: any) => state.pikoset)
-  //const whoamiSelector = useSelector((state: any) => state.whoami)
+  const whoamiSelector = useSelector((state: any) => state.whoami)
+  const [itsOwnerPage, setItsOwnerPage] = useState<any>(null)
 
   //const navigate = useNavigate();
   const { username } = useParams();
@@ -124,8 +134,10 @@ function P() {
       if(userData){} else {
       fetch(`${pikoSelector.api}/api/p/${username}`)
         .then((response) => response.json())
-        .then((data) => {
+        .then(async (data) => {
           setUserData(data);
+          console.log(whoamiSelector) // редукс кажется забыл что он подписал whoamiSelector на обнолвение при изменении стора :(
+
         })
         .catch((error) => console.error("error:", error));
     };
@@ -173,7 +185,7 @@ function P() {
 
       case "notExist":
         return ( 
-                <ProfileNotExistContainer userData={userData}/> 
+                <ProfileNotExistContainer/> 
         )
                  
         break;
