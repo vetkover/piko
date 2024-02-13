@@ -23,6 +23,7 @@
 
     "p.userNotFound": "not exist",
     "p.postsIsEmpty": "this user hasn't posted anything yet",
-    "p.posts": "posts:"
+    "p.posts": "posts:",
+    "p.editProfile": "edit profile"
     
 }

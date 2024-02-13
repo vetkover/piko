@@ -1,6 +1,6 @@
 .profile-container{
     margin-left: 25.5%;
-    width: 925px;
+    width: 921px;
     height: auto;
     display: flex;
     justify-self: center;
@@ -15,6 +15,12 @@
             height: auto;
             position: relative;
             background-color: #26282b;
+
+            .edit-profile{
+                top: 250px;
+                right: 35px;
+                position: absolute;
+            }
 
             .baner{
                 width: 100%;
@@ -80,7 +86,7 @@
 
 .posts-container{
     margin-left: 25.5%;
-    width: 925px;
+    width: 921px;
     height: auto;
 
     .posts{

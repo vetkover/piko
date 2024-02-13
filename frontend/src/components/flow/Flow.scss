@@ -5,13 +5,42 @@
     width: 900px;
     height: 500px;
     display: flex;
-    justify-self: center;
+    flex-direction: column;
     position: fixed;
     background-color: #50a937;
+
+    .flow{
+        width: 100%;
+        height: 100%;
+
     .flow-body{
-        display: flex;
+        width: 100%;
+        height: 100%;
         background-color: #2a2e34;
 
 
     }
+
+    .flow-header{
+        background-color: #1d1d20;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        #close-button{
+            background-color: transparent;
+            svg{
+                path{
+                fill: #d3d3d3;
+                }
+            }
+        }
+
+        .flow-title{
+            color: white;
+            margin-left: 5px;
+            margin-bottom: 5px;
+        }
+    }
+
+}
 }

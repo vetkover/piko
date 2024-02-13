@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { getText } from "../../components/languageProcessing/localize";
 import { useNavigate, useParams } from "react-router";
 import "./P.scss";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import baner404 from './404baner.png';
 import avatar404 from './404avatar.png';
@@ -46,6 +46,7 @@ function P() {
   //const navigate = useNavigate();
   
   const [userData, setUserData] = useState<any>(null);
+  const dispatch = useDispatch();
   useEffect(() => {
     const fetchData = async () => {
       if(userData){} else {
@@ -160,20 +161,33 @@ function P() {
   
           <div className="about-user">
   
-              <img className="avatar" src={`${pikoSelector?.cdn}/${userData?.avatar}`} />
-  
-            <img className="baner" src={`${pikoSelector?.cdn}/${userData?.baner}`} />
-            <div className="creditial">
-            {(
+          {(
               () => {
                 if(itsOwnerPage){
                   return (
                     <div className="edit-profile">
+                      <button onClick={
+                        (
+                          () => {
+                            const flowURL = "test"; 
+                            const flowTitle = getText("p.editProfile"); 
+                            dispatch({type:"CREATE_FLOW", payload: {flowURL,flowTitle}})
+                          }
+                        )
+                      }>
+                        <a>{getText("p.editProfile")}</a>
+                      </button>
                     </div>
                   )
                 } 
               }
             )()}
+
+              <img className="avatar" src={`${pikoSelector?.cdn}/${userData?.avatar}`} />
+  
+            <img className="baner" src={`${pikoSelector?.cdn}/${userData?.baner}`} />
+            <div className="creditial">
+
               <a id="nickname">{userData?.nickname}</a>
               <a id="username">{userData?.username}</a>
             </div>
