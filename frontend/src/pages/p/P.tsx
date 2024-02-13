@@ -35,90 +35,14 @@ function ProfileNotExistContainer(){
   )
 }
 
-function ProfilePosts(){
 
-  const {username} = useParams()
-  const pikoSelector = useSelector((state: any) => state.pikoset)
-
-  const [userPosts, setUserPosts] = useState<any>(null)
-
-  useEffect(() => {
-    const fetchData = async () => {
-
-      fetch(`${pikoSelector.api}/api/post/posts/${username}`)
-        .then((response) => response.json())
-        .then((data) => {
-          setUserPosts(data);
-        })
-        .catch((error) => console.error("error:", error));
-    ;
-    
-  }
-  fetchData();
-  }, [])
-
-  function postsArray() {
-
-    if(userPosts?.posts){
-
-    const posts = userPosts?.posts.map((obj: any) => (
-      <div className="post" key={obj.id}>
-        <div className="left-line">
-          <img className="avatar" src={avatar404} />
-        </div>
-  
-        <div className="middle-line">
-          <div className="author-line">
-            <div className="username">{obj.author}</div>
-            <div className="username">{obj.date}</div>
-          </div>
-  
-          <div className="post-data">
-            <div className="post-text">{obj.text}</div>
-  
-            <div className="post-images">
-              {obj.images &&
-                obj.images.map((image: string, index: number) => (
-                  <img key={index} src={image} />
-                ))}
-            </div>
-          </div>
-        </div>
-      </div>
-    ))
-    return posts;
-    } else {
-      return (
-        <div className="post-is-empty">
-          {getText("p.postsIsEmpty")}
-        </div>
-      )
-    }
-
-  }
-
-  return (
-    <React.Fragment>
-      <div className="posts-container">
-        <div className="posts">
-          <div className="post-header">
-                  <a>{getText("p.posts")}</a> { (userPosts?.count)? userPosts?.count: 0}
-          </div>
-          <div className="posts-content">
-          {postsArray()}
-          </div>
-          
-        </div>
-        </div>
-    </React.Fragment>
-  )
-}
 
 function P() {
   const pikoSelector = useSelector((state: any) => state.pikoset)
   const whoamiSelector = useSelector((state: any) => state.whoami)
   const { username } = useParams();
   const [itsOwnerPage, setItsOwnerPage] = useState<any>(null)
+
   //const navigate = useNavigate();
   
   const [userData, setUserData] = useState<any>(null);
@@ -136,13 +60,99 @@ function P() {
   }
   fetchData();
   setItsOwnerPage(whoamiSelector?.username == username ?  true : false)
-  }, [userData])
+  }, [userData, username])
 
+  function ProfilePosts(){
 
+    const {username} = useParams()
+    const pikoSelector = useSelector((state: any) => state.pikoset)
+  
+    const [userPosts, setUserPosts] = useState<any>(null)
+  
+    useEffect(() => {
+      const fetchData = async () => {
+  
+        fetch(`${pikoSelector.api}/api/post/posts/${username}`)
+          .then((response) => response.json())
+          .then((data) => {
+            setUserPosts(data);
+          })
+          .catch((error) => console.error("error:", error));
+      ;
+      
+    }
+    fetchData();
+    }, [])
+  
+    function postsArray() {
+  
+      if(userPosts?.posts){
+  
+      const posts = userPosts?.posts.map((obj: any) => (
+        <div className="post" key={obj.id}>
+          <div className="left-line">
+            <img className="avatar" src={avatar404} />
+          </div>
+    
+          <div className="middle-line">
+            <div className="author-line">
+              <div className="username">{obj.author}</div>
+              <div className="username">{obj.date}</div>
+            </div>
+    
+            <div className="post-data">
+              <div className="post-text">{obj.text}</div>
+    
+              <div className="post-images">
+                {obj.images &&
+                  obj.images.map((image: string, index: number) => (
+                    <img key={index} src={image} />
+                  ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      ))
+      return posts;
+      } else {
+        return (
+          <div className="post-is-empty">
+            {getText("p.postsIsEmpty")}
+          </div>
+        )
+      }
+  
+    }
+  
+    return (
+      <React.Fragment>
+        <div className="posts-container">
+          <div className="posts">
+            <div className="post-header">
+                <a>{getText("p.posts")}</a> { (userPosts?.count)? userPosts?.count: 0}
+            </div>
+  
+            {(
+              () => {
+                if(itsOwnerPage){
+                  return (
+                    <div className="post-create">
+                    </div>
+                  )
+                } 
+              }
+            )()}
+  
+            <div className="posts-content">
+            {postsArray()}
+            </div>
+          </div>
+          </div>
+      </React.Fragment>
+    )
+  }
 
   function ProfileContainer(){
-
-
     return (
       <div className="profile-container">
   
@@ -154,6 +164,16 @@ function P() {
   
             <img className="baner" src={`${pikoSelector?.cdn}/${userData?.baner}`} />
             <div className="creditial">
+            {(
+              () => {
+                if(itsOwnerPage){
+                  return (
+                    <div className="edit-profile">
+                    </div>
+                  )
+                } 
+              }
+            )()}
               <a id="nickname">{userData?.nickname}</a>
               <a id="username">{userData?.username}</a>
             </div>
@@ -172,17 +192,14 @@ function P() {
         return ( 
           <React.Fragment>
               <ProfileContainer />
-              <ProfilePosts />
+              <ProfilePosts/>
            </React.Fragment>
   )
-        break;
 
       case "notExist":
         return ( 
-                <ProfileNotExistContainer/> 
+          <ProfileNotExistContainer/> 
         )
-                 
-        break;
 
       default:
         return null;
@@ -190,11 +207,9 @@ function P() {
   }
 
   return (
-
     <React.Fragment>
     {renderPage()}
     </React.Fragment>
-
   );
 }
 
