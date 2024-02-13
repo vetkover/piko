@@ -39,11 +39,15 @@ const Flow = () => {
       
           {FlowRoutes.map((path, index) =>{
             const {element, route} = path
+            if(route === flowSelector.flowURL){
             return (
               <React.Fragment key={route}>
                 {element}
               </React.Fragment>
               )
+            } else{
+              return false
+            }
           })}
           
           </div>

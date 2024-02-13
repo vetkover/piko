@@ -169,7 +169,7 @@ function P() {
                       <button onClick={
                         (
                           () => {
-                            const flowURL = "test"; 
+                            const flowURL = "editProfile"; 
                             const flowTitle = getText("p.editProfile"); 
                             dispatch({type:"CREATE_FLOW", payload: {flowURL,flowTitle}})
                           }

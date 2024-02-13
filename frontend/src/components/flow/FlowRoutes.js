@@ -1,10 +1,10 @@
-import Test from '../../flow/test/Test'
+import EditProfile from '../../flow/editProfile/editProfile'
 
 
 const FlowRoutes = [
 {
-    route: "test",
-  element: <Test />
+    route: "editProfile",
+  element: <EditProfile />
 }
 
 ];

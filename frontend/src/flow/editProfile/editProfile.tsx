@@ -3,9 +3,9 @@ import { getText } from "../../components/languageProcessing/localize";
 import { useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 
-function Test() {
+function EditProfile() {
   
   return <div>hello world it's a flow element :D</div>;
 }
 
-export default Test;
+export default EditProfile;
