@@ -1,182 +1,186 @@
-.profile-container{
-    margin-left: 25.5%;
-    width: 921px;
-    height: auto;
+.profile-container {
+  margin-left: 25.5%;
+  width: 921px;
+  height: auto;
+  display: flex;
+  justify-self: center;
+  .profile {
     display: flex;
-    justify-self: center;
-    .profile{
-        display: flex;
-        background-color: #2a2e34;
+    background-color: #2a2e34;
 
+    .about-user {
+      border: #3c3f43 3px solid;
+      width: 100%;
+      height: auto;
+      position: relative;
+      background-color: #26282b;
 
-        .about-user{
-            border: #3c3f43 3px solid;
-            width: 100%;
-            height: auto;
-            position: relative;
-            background-color: #26282b;
+      .edit-profile {
+        top: 250px;
+        right: 35px;
+        position: absolute;
+        border-radius: 29px;
+        border: solid 3px rgb(115, 59, 59);
 
-            .edit-profile{
-                top: 250px;
-                right: 35px;
-                position: absolute;
-            }
+        #edit-profile-flow {
+          padding: 10px 30px 10px 30px;
+          background-color: transparent;
 
-            .baner{
-                width: 100%;
-                height: 230px;
-                background-color: black;
-            }
-
-            .avatar{
-                z-index: 5;
-                top: 130px;
-                left: 40px;
-                position: absolute;
-                background-color: rgb(0, 0, 0);
-                width: 180px;
-                height: 180px;
-                border-radius: 50%;
-                border: 4px #2a2e34 solid;
-            }
-
-            .creditial{
-                margin-left: 25px;
-                margin-top: 90px;
-                width: auto;
-                display: flex;
-                flex-direction: column;
-
-                .user-not-found{
-
-                    width: 100%;
-                    height: auto;
-                    position: relative;
-                    background-color: #26282b;
-                    display: flex;
-                    align-items: center;
-                    flex-direction: column;
-                    color: white;
-
-                    #userNotFound-img{
-                        width: 280px;
-                        height: 420px;
-                    }
-                }
-
-                #nickname{
-                    font-size: 30px;
-                    color: white;
-                }
-                #username{
-                    color: rgb(106, 101, 101);
-                }
-            }
-            .bio{
-                margin-left: 25px;
-                margin-right: 25px;
-                margin-top: 20px;
-                padding-bottom: 15px;
-                color: white;
-            }
+          .text {
+            color: white;
+            font-size: 20px;
+          }
         }
+      }
+
+      .baner {
+        width: 915px;
+        height: 230px;
+        background-color: black;
+      }
+
+      .avatar {
+        z-index: 5;
+        top: 130px;
+        left: 40px;
+        position: absolute;
+        background-color: rgb(0, 0, 0);
+        width: 180px;
+        height: 180px;
+        border-radius: 50%;
+        border: 4px #2a2e34 solid;
+      }
+
+      .creditial {
+        margin-left: 25px;
+        margin-top: 90px;
+        width: auto;
+        display: flex;
+        flex-direction: column;
+
+        .user-not-found {
+          width: 100%;
+          height: auto;
+          position: relative;
+          background-color: #26282b;
+          display: flex;
+          align-items: center;
+          flex-direction: column;
+          color: white;
+
+          #userNotFound-img {
+            width: 280px;
+            height: 420px;
+          }
+        }
+
+        #nickname {
+          font-size: 30px;
+          color: white;
+        }
+        #username {
+          color: rgb(106, 101, 101);
+        }
+      }
+      .bio {
+        margin-left: 25px;
+        margin-right: 25px;
+        margin-top: 20px;
+        padding-bottom: 15px;
+        color: white;
+      }
     }
+  }
 }
 
+.posts-container {
+  margin-left: 25.5%;
+  width: 921px;
+  height: auto;
 
-.posts-container{
-    margin-left: 25.5%;
-    width: 921px;
-    height: auto;
+  .posts {
+    background-color: #2a2e34;
+    border-left: #3c3f43 3px solid;
+    border-right: #3c3f43 3px solid;
+    border-bottom: #3c3f43 3px solid;
 
-    .posts{
-        background-color: #2a2e34;
-        border-left: #3c3f43 3px solid ;
-        border-right: #3c3f43 3px solid ;
-        border-bottom: #3c3f43 3px solid ;
-        
+    .post-header {
+      color: white;
+      padding-bottom: 10px;
+      background-color: #26282b;
+      font-size: 25px;
 
-        .post-header{
-            color: white;
-            padding-bottom: 10px;
-            background-color: #26282b;
-            font-size: 25px;
-
-            border-bottom: #3c3f43 3px solid;
-            a{
-                margin-left: 20px;
-            }
-        }
-
-        .post-create{
-            
-        }
-
-        .posts-content{
-            
-            width: 100%;
-            height: auto;
-            display: flex;
-            position: relative;
-            background-color: #26282b;
-            display: flex;
-            flex-direction: column;
-
-            .post-is-empty{
-                color: white;
-                display: flex;
-                justify-content: center;
-            }
-
-            .post{
-                display: grid;
-                grid-template-columns: 65px 93%;
-                grid-template-rows: auto;
-                color: white;
-                .left-line{
-                    grid-column: 1;
-                }
-                .middle-line{
-                    
-                    display: flex;
-                    flex-direction: column;
-                    grid-column: 2;
-                    .author-line{
-                        display: flex;
-                        flex-direction:row;
-
-                        .username{
-                            padding-right: 5px;
-                        }
-                    }
-
-                }
-                .post-data{
-                    display: flex;
-                    flex-direction: column;
-
-                    .post-images{
-                        display: flex;
-                        justify-content: flex-start;
-                        flex-wrap: wrap;
-                        img{
-                            width: calc(96% / 2);
-                            height: auto;
-                            object-fit: cover;
-                            padding: 5px;
-                        }
-                    }
-                }
-
-                .avatar{
-                    z-index: 5;
-                    background-color: rgb(0, 0, 0);
-                    width: 55px;
-                    height: 55px;
-                    border-radius: 50%;
-                    border: 4px #2a2e34 solid;
-                }
-            }
-        }
+      border-bottom: #3c3f43 3px solid;
+      a {
+        margin-left: 20px;
+      }
     }
+
+    .post-create {
+    }
+
+    .posts-content {
+      width: 100%;
+      height: auto;
+      display: flex;
+      position: relative;
+      background-color: #26282b;
+      display: flex;
+      flex-direction: column;
+
+      .post-is-empty {
+        color: white;
+        display: flex;
+        justify-content: center;
+      }
+
+      .post {
+        display: grid;
+        grid-template-columns: 65px 93%;
+        grid-template-rows: auto;
+        color: white;
+        .left-line {
+          grid-column: 1;
+        }
+        .middle-line {
+          display: flex;
+          flex-direction: column;
+          grid-column: 2;
+          .author-line {
+            display: flex;
+            flex-direction: row;
+
+            .username {
+              padding-right: 5px;
+            }
+          }
+        }
+        .post-data {
+          display: flex;
+          flex-direction: column;
+
+          .post-images {
+            display: flex;
+            justify-content: flex-start;
+            flex-wrap: wrap;
+            img {
+              width: calc(96% / 2);
+              height: auto;
+              object-fit: cover;
+              padding: 5px;
+            }
+          }
+        }
+
+        .avatar {
+          z-index: 5;
+          background-color: rgb(0, 0, 0);
+          width: 55px;
+          height: 55px;
+          border-radius: 50%;
+          border: 4px #2a2e34 solid;
+        }
+      }
+    }
+  }
 }

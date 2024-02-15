@@ -1,4 +1,6 @@
 {
+    "apply": "подтвердить",
+    
     "home.about_text": "подарите интернету свои мысли и действия в любой их форме",
     "home.postChibi": "выразите свою мысль в посте",
     "home.fileChibi": "делитесь файлами",
@@ -24,5 +26,11 @@
     "p.userNotFound": "пользователя не существует",
     "p.postsIsEmpty": "пользователь пока ничего не публиковал",
     "p.posts": "посты:",
-    "p.editProfile": "редактировать профиль"
+    "p.editProfile": "редактировать профиль",
+
+    "flow/editProfile.editAvatar": "сменить аватар",
+    "flow/editProfile.editBaner": "сменить банер",
+    "flow/editProfile.previewMode": "режим превью",
+    "flow/editProfile.createBio": "время создать описание профиля?"
+    
 }

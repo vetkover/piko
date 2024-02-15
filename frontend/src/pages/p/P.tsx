@@ -35,8 +35,6 @@ function ProfileNotExistContainer(){
   )
 }
 
-
-
 function P() {
   const pikoSelector = useSelector((state: any) => state.pikoset)
   const whoamiSelector = useSelector((state: any) => state.whoami)
@@ -166,7 +164,7 @@ function P() {
                 if(itsOwnerPage){
                   return (
                     <div className="edit-profile">
-                      <button onClick={
+                      <button id="edit-profile-flow" onClick={
                         (
                           () => {
                             const flowURL = "editProfile"; 
@@ -175,7 +173,7 @@ function P() {
                           }
                         )
                       }>
-                        <a>{getText("p.editProfile")}</a>
+                        <a className="text">{getText("p.editProfile")}</a>
                       </button>
                     </div>
                   )
@@ -191,7 +189,7 @@ function P() {
               <a id="nickname">{userData?.nickname}</a>
               <a id="username">{userData?.username}</a>
             </div>
-            <div className="bio">{userData?.bio}</div>
+            <div className="bio">{(userData?.bio != "" || itsOwnerPage === false)? userData?.bio : getText("flow/editProfile.createBio")}</div>
   
           </div>
         </div>

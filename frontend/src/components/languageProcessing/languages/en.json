@@ -1,4 +1,6 @@
 {
+    "apply": "apply",
+    
     "home.about_text": "give the Internet your thoughts and actions in any form",
     "home.postChibi": "express your thoughts in a post",
     "home.fileChibi": "share files",
@@ -24,6 +26,13 @@
     "p.userNotFound": "not exist",
     "p.postsIsEmpty": "this user hasn't posted anything yet",
     "p.posts": "posts:",
-    "p.editProfile": "edit profile"
+    "p.editProfile": "edit profile",
+
+    "flow/editProfile.editAvatar": "change avatar",
+    "flow/editProfile.editBaner": "change baner",
+    "flow/editProfile.previewMode": "preview mode",
+    "flow/editProfile.createBio": "Is it time to create bio?"
+
+
     
 }

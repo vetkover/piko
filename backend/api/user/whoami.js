@@ -15,6 +15,8 @@ router.get("/whoami", async (req, res) => {
             resObj.nickname = DBuserData.nickname
             resObj.email = DBuserData.email
             resObj.avatar = DBuserData.avatar
+            resObj.baner = DBuserData.baner
+            resObj.bio = DBuserData.bio
 
             res.json(resObj);
         } else {

@@ -27,9 +27,8 @@ const App = () => {
           .catch((error) => console.error("error:", error));
     }
     fetchData1();
-    fetchData2();
+    Promise.all([fetchData2()])
     }, [])
-
 
     return (
             <Routes>
