@@ -13,7 +13,8 @@ const isNicknameUnique = require('./api/auth/isNicknameUnique.js')
 const posts = require('./api/post/posts.js')
 
 const pikoSet = require('./api/stuff/pikoset')
-const p =require('./api/user/p.js')
+const p = require('./api/user/p.js')
+const profile = require('./api/user/profile.js')
 
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "http://localhost:3000");
@@ -24,6 +25,7 @@ app.use(function(req, res, next) {
 
 app.use(express.json());
 
+app.use('/api/user', profile)
 app.use('/api/user', whoami)
 app.use('/api/auth', signin)
 app.use('/api/auth', isMailUnique)

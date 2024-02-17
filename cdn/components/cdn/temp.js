@@ -16,14 +16,12 @@ const ruleSet = {
     },
 }
 
-
-
 router.post('/temp/:type', async (req, res) => {
     const contentType = req.params.type;
     const rule = ruleSet[contentType]
 
     if (!rule) {
-        return res.status(400).send('Неверный тип запроса');
+        return res.status(400).json({message: "wrong type", status: false});
     }
 
     const storage = multer.diskStorage({
@@ -54,7 +52,7 @@ router.post('/temp/:type', async (req, res) => {
     upload(req, res, function(err) {
       if (err) {
         console.error(err);
-        res.status(500).json({message: false});
+        res.status(500).json({status: false});
       } else {
 
         const fileObject = {
@@ -66,16 +64,12 @@ router.post('/temp/:type', async (req, res) => {
 
         tempUpload(fileObject)
         res.json({
-            message: true,
+            status: true,
             tempToken: fileObject.name
         });
       }
     });
 });
-  
-
-module.exports = router;
-
   
 
 module.exports = router;
