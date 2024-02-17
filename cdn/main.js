@@ -14,6 +14,14 @@ app.use(function(req, res, next) {
 app.use("/cdn", takeFile)
 app.use("/cdn", temp)
 
+// yggdrasil - data exchange between piko servers
+
+const helloworld = require('./yggdrasil/receiving/helloworld.js')
+const yggdrasilMidleware = require('./yggdrasil/yggdrasilMidleware.js');
+
+app.use(yggdrasilMidleware)
+app.use('/yggdrasil/', helloworld)
+
 app.listen(PORT, () =>{
     console.log(`server is started on port ${PORT}`)
  })
