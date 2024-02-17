@@ -39,11 +39,8 @@ app.use('/api/post/', posts)
 
 // yggdrasil - data exchange between piko servers
 
-const helloworld = require('./yggdrasil/helloworld.js')
 const yggdrasilMidleware = require('./yggdrasil/yggdrasilMidleware.js');
-const yggFetch = require('./yggdrasil/yggFetch.js');
 
-console.log(yggFetch())
 app.use(yggdrasilMidleware)
 
 
