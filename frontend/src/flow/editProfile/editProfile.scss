@@ -5,7 +5,8 @@
   .text {
     margin-left: 22px;
     color: white;
-    position: fixed;
+    position: absolute;
+    z-index: 1;
   }
 
   .edit-profile-container {

@@ -7,8 +7,8 @@ async function signIn(username, nickname, password, email){
             "password": password,
             "nickname": nickname,
             "bio": "",
-            "avatar": "avatar",
-            "baner": "baner",
+            "avatar": "defaultAvatar",
+            "baner": "defaultBaner",
             "chats": 0,
             "sessions": [],
             "email": email

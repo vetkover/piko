@@ -1,0 +1,133 @@
+.media-container-body{
+    width: fit-content;
+    height: 100%;
+
+    .media-container{
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        
+        &:not(:empty){
+            border: #3c3f43 3px solid;
+            box-sizing: border-box;
+        }
+
+        .row-1{
+            display:flex;
+            max-width: 800px;
+            overflow: hidden;
+        .media{
+            
+            .mediaContent{
+                max-width: 284px;
+                max-height: 600px;
+                height: 350px;
+                object-fit: cover;
+            }
+        }
+    }
+
+    .row-2{
+        display:flex;
+        max-width: 800px;
+        overflow: hidden;
+    .media{
+        
+        .mediaContent{
+            max-width: 284px;
+            height: 350px;
+            object-fit: cover;
+        }
+    }
+}
+    }
+}
+
+.body-container {
+    padding-top: 25px;
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 25px;
+
+                .edit-options-container{
+                    margin-top:5px;
+                    display: flex;
+                    justify-content: flex-end;
+                    margin-right: 15px;
+
+                .edit-option{
+                    display: flex;
+                    align-items: center;
+                    padding-left: 5px;
+
+                    #range{
+                        color: white;
+                    }
+
+                    #out-range{
+                        color: red
+                    }
+
+                    #img{
+                        width: 35px;
+                        height: 35px;
+                    }
+                }
+
+            }
+    .preview-post-create{
+        border: #3c3f43 3px solid;
+        display: flex;
+        .left-corner{
+            height: 100%;
+            .userAvatar{
+                width: 60px;
+                height: 60px;
+                border-radius: 50%;
+            }
+        }
+
+        .middle-corner{
+            margin-left: 5px;
+
+
+
+            .post-content-container{
+                .post-text{
+                    #text{
+                        color:white;
+                        width: 800px;
+                        background-color: transparent;
+                        border: none;
+                        height: fit-content;
+                        outline: inherit;
+                        resize: vertical;
+
+                        &:empty:not(:focus)::before {
+                            content: attr(placeholder);
+                            color: rgb(225, 225, 225);
+                        }
+                    }
+
+                }
+            }
+
+            .about-author{
+
+                .top{
+                    display: flex;
+                    .author{
+                        color:white;
+                    }
+
+                    .time{
+                        padding-left: 5px;
+                        color:white;
+                    }
+                }
+            }
+        }
+    }
+
+}
