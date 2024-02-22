@@ -14,6 +14,10 @@ const ruleSet = {
         fileSize: 1024 * 1024 * 5,
         type: ['image/png', 'image/jpeg']
     },
+    media: {
+      fileSize: 1024 * 1024 * 500,
+      type: ['image/png', 'image/jpeg', 'image/jpg']
+  }
 }
 
 router.post('/temp/:type', async (req, res) => {

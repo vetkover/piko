@@ -9,35 +9,85 @@ function CreatePost() { //code refactoring urgently needed... sometime in the fu
   const whoamiSelector = useSelector((state: any) => state.whoami)
 
   const postText = useRef<any>()
-  const exampleData = {
-    images: ["https://i.pinimg.com/564x/a9/93/8b/a9938b38b0d6da0d11bc50b7762790c5.jpg"]
+
+const [previewData, setPreviewData] = useState<any>({
+    images: []
+})
+
+useEffect(() => {
+}, [previewData]);
+
+function uploadMedia(event: React.ChangeEvent<HTMLInputElement>) {
+    const files = event.currentTarget.files;
+
+    if (files) {
+        let formData = new FormData();
+        formData.append('file', files[0]);
+        let xhr = new XMLHttpRequest();
+
+        xhr.upload.onprogress = function (event) {
+            console.log(event.loaded);
+        };
+
+        xhr.open('POST', `${pikoSelector?.cdn}/temp/media`, true);
+        xhr.responseType = 'json';
+
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+                const data = xhr.response;
+
+                if (data.status) {
+                    addImage(`${pikoSelector?.cdn}/${data.tempToken}`);
+                }
+            }
+        };
+
+        xhr.send(formData);
+    }
 }
+
+const addImage = (newImage: string) => {
+    setPreviewData((prevState: { images: any; }) => {
+        if (!prevState.images.includes(newImage)) {
+            return {
+                ...prevState,
+                images: [...prevState.images, newImage],
+            };
+        }
+        return prevState;
+    });
+};
+  const removeImage = (imageToRemove: string) => {
+    setPreviewData((prevState: {images:any;}) => ({
+      ...prevState,
+      images: prevState.images.filter((image: string) => image !== imageToRemove)
+    }));
+  };
 
     const [textLength, setTextLenght] = useState<number>(0)
   const postTextChange = (e: React.FormEvent<HTMLInputElement>) =>{
     setTextLenght(e.currentTarget.textContent!.length)
   }
-  console.log(textLength)
 
   function MediaContainer(){
-
-
-
+    useEffect(() => {
+        console.log("MediaContainer updated with new previewData", previewData);
+      }, [previewData]);
+      
     function imageProcessing() {
-        return exampleData.images.map((value, index) => {
+        return previewData.images.map((value: any, index: number) => {
             const img = new Image();
             img.src = value;
     
             img.onload = () => {
             }
-    
-            if (img.width > 0 && img.height > 0) {
+        
                 return {
                     src: value,
                     width: img.width,
                     height: img.height
                 }
-            }
+            
         }).filter(Boolean);
     }
     
@@ -82,7 +132,7 @@ function CreatePost() { //code refactoring urgently needed... sometime in the fu
             return targetHeight * ratio;
         }
 
-        const targetWidth = imageData.map((value, index)=>{
+        const targetWidth = imageData.map((value: any, index: number)=>{
         
         if(imageData.length == 1){
             return 600
@@ -91,10 +141,10 @@ function CreatePost() { //code refactoring urgently needed... sometime in the fu
         })
 
         return (
-            <React.Fragment>
+            <React.Fragment >
                 {imageData.length > 0 &&(
                     <div className="row-1">
-                        {imageData.slice(0,3).map((value, index)=>{
+                        {imageData.slice(0,3).map((value: any, index: number)=>{
                             return (
                                 <React.Fragment key={value!.src}>
                                 <div className="media">
@@ -107,7 +157,7 @@ function CreatePost() { //code refactoring urgently needed... sometime in the fu
                 )}
                     {imageData.length >= 3 && imageData.length <= 6 && (
                     <div className="row-2">
-                        {imageData.slice(3,6).map((value, index)=>{
+                        {imageData.slice(3,6).map((value: any, index: number)=>{
                             console.log(targetWidth[index+3])
                             return (
                                 <React.Fragment key={value!.src}>
@@ -138,6 +188,7 @@ function CreatePost() { //code refactoring urgently needed... sometime in the fu
 function createpost(){
 
 }
+
 
 
   return (
@@ -176,7 +227,8 @@ function createpost(){
                     <div className="edit-options-container">
 
                         <div className="edit-option">
-                            <img id="img" src={imageIco}></img>
+                            <input onChange={uploadMedia} type="file" accept=".png,.jpeg,.jpg"></input>
+                            <img id="img" src={imageIco} ></img>
                         </div>
 
                         <div className="edit-option">

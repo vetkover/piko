@@ -108,7 +108,6 @@ function EditProfile() {
 
       xhr.upload.onprogress = function(event) {
         avatarHoverMenu.current.style.opacity = 1;
-        console.log(`${event.loaded} - ${event.total}`);
         const uploadPercent = (event.loaded/event.total)*100
         avatarProgressBar.current.style.width = (uploadPercent < 100)? uploadPercent + '%' : "0%" ;
       };
