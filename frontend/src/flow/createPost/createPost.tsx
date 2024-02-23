@@ -3,6 +3,7 @@ import { getText } from "../../components/languageProcessing/localize";
 import { useDispatch, useSelector } from "react-redux";
 import './createPost.scss'
 import imageIco from './imageIco.svg'
+import xIco from './xIco.svg'
 
 function CreatePost() { //code refactoring urgently needed... sometime in the future :3
   const pikoSelector = useSelector((state: any) => state.pikoset)
@@ -25,8 +26,24 @@ function uploadMedia(event: React.ChangeEvent<HTMLInputElement>) {
         formData.append('file', files[0]);
         let xhr = new XMLHttpRequest();
 
+        let filename = files[0].name
+
         xhr.upload.onprogress = function (event) {
-            console.log(event.loaded);
+
+            setProgressLayer((prevState: any[]) => {
+                const index = prevState.findIndex(item => item.filename === filename);
+                
+                setProgressLayer((prevState: any[]) => {
+                    return prevState.filter(item => !(item.nowK === item.totalK));
+                  });
+                if (index !== -1) {
+                  return prevState.map(item =>
+                    item.filename === filename ? { ...item, nowK: event.loaded, totalK: event.total } : item
+                  );
+                } else {
+                  return [...prevState, { filename: filename, nowK: event.loaded, totalK: event.total }];
+                }
+              });
         };
 
         xhr.open('POST', `${pikoSelector?.cdn}/temp/media`, true);
@@ -71,7 +88,6 @@ const addImage = (newImage: string) => {
 
   function MediaContainer(){
     useEffect(() => {
-        console.log("MediaContainer updated with new previewData", previewData);
       }, [previewData]);
       
     function imageProcessing() {
@@ -91,7 +107,6 @@ const addImage = (newImage: string) => {
         }).filter(Boolean);
     }
     
-
     function RowCalc() {
 
         const ruleSet1 = {
@@ -148,6 +163,9 @@ const addImage = (newImage: string) => {
                             return (
                                 <React.Fragment key={value!.src}>
                                 <div className="media">
+                                    <button id="close-button" onClick={()=> removeImage(value.src)}>
+                                        <img id="close-img" src={xIco}/>
+                                    </button>
                                 <img style={imageData.length !== 1 ? {...ruleSet1, width: targetWidth[index]} : {...ruleSet1, height: "600px !important"}} className="mediaContent" src={value!.src}/>
                             </div>
                             </React.Fragment>
@@ -158,11 +176,13 @@ const addImage = (newImage: string) => {
                     {imageData.length >= 3 && imageData.length <= 6 && (
                     <div className="row-2">
                         {imageData.slice(3,6).map((value: any, index: number)=>{
-                            console.log(targetWidth[index+3])
                             return (
                                 <React.Fragment key={value!.src}>
                                 <div className="media">
-                                <img  style={{...ruleSet1, width: targetWidth[index+3]}}className="mediaContent" src={value!.src}/>
+                                <button id="close-button" onClick={()=> removeImage(value.src)}>
+                                        <img id="close-img" src={xIco}/>
+                                    </button>
+                                <img style={{...ruleSet1, width: targetWidth[index+3]}}className="mediaContent" src={value!.src}/>
                             </div>
                             </React.Fragment>
                             )
@@ -189,7 +209,34 @@ function createpost(){
 
 }
 
+const [progressLayer, setProgressLayer] = useState<any>([])
 
+function ProgressContainer(){ //potentially for removal
+
+
+      
+    return(
+        <div className="upload-progress">
+
+        {progressLayer.map((value: any, index: any) => {
+            console.log(value)
+            return (
+                <div className="progress-container" key={value.totalK}>
+                <svg className="progress" viewBox="0 0 36 36">
+                    <path className="circle-bg"
+                        d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
+    
+                    <path className="circle" strokeDasharray={`${(value.nowK/value.totalK)*100}, 100`} d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                </svg>
+                <a id="text">{value.filename}</a>
+                </div>
+            )
+        })}
+
+    </div>
+
+    )
+}
 
   return (
         <React.Fragment>
@@ -225,6 +272,8 @@ function createpost(){
                     </div>
                     </div> 
                     <div className="edit-options-container">
+
+                        <ProgressContainer />
 
                         <div className="edit-option">
                             <input onChange={uploadMedia} type="file" accept=".png,.jpeg,.jpg"></input>
