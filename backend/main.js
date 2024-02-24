@@ -11,6 +11,7 @@ const isUsernameUnique = require('./api/auth/isUsernameUnique.js')
 const isNicknameUnique = require('./api/auth/isNicknameUnique.js')
 
 const posts = require('./api/post/posts.js')
+const create = require('./api/post/create.js')
 
 const pikoSet = require('./api/stuff/pikoset')
 const p = require('./api/user/p.js')
@@ -35,6 +36,7 @@ app.use('/api/auth', login)
 app.use('/api/', pikoSet)
 app.use('/api', p)
 app.use('/api/post/', posts)
+app.use('/api/post/', create)
 
 
 // yggdrasil - data exchange between piko servers

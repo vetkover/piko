@@ -1,8 +1,6 @@
 const express = require("express");
 router = express.Router();
 
-const userData = require('../../components/mongoDB/userData.js')
-const parseCookies  = require('../../components/stuff/cookieReader.js')
 
 const posts = require('../../components/mongoDB/posts.js')
 
@@ -21,16 +19,5 @@ router.get("/posts/:username", async (req, res) => {
     obj.status = "notExist"
     res.json(obj);
 }});
-
-router.post("/posts/create", async (req, res) => {
-    const cookie = parseCookies(req.headers.cookie);
-    const DBuserData = await userData(cookie.token);
-
-    if(DBuserData){
-        const data = req.body;
-        console.log(data)
-    }
-        
-});
 
 module.exports = router;

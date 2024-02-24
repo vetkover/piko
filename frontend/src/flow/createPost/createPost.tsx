@@ -12,7 +12,8 @@ function CreatePost() { //code refactoring urgently needed... sometime in the fu
   const postText = useRef<any>()
 
 const [previewData, setPreviewData] = useState<any>({
-    images: []
+    images: [],
+    text: ""
 })
 
 useEffect(() => {
@@ -32,10 +33,14 @@ function uploadMedia(event: React.ChangeEvent<HTMLInputElement>) {
 
             setProgressLayer((prevState: any[]) => {
                 const index = prevState.findIndex(item => item.filename === filename);
-                
-                setProgressLayer((prevState: any[]) => {
-                    return prevState.filter(item => !(item.nowK === item.totalK));
-                  });
+
+                const updatedProgress = prevState.map(item =>
+                    item.filename === filename ? { ...item, nowK: event.loaded, totalK: event.total } : item
+                );
+                if (event.loaded === event.total) {
+                    return updatedProgress.filter(item => item.filename !== filename);
+                }
+
                 if (index !== -1) {
                   return prevState.map(item =>
                     item.filename === filename ? { ...item, nowK: event.loaded, totalK: event.total } : item
@@ -82,9 +87,16 @@ const addImage = (newImage: string) => {
   };
 
     const [textLength, setTextLenght] = useState<number>(0)
-  const postTextChange = (e: React.FormEvent<HTMLInputElement>) =>{
-    setTextLenght(e.currentTarget.textContent!.length)
-  }
+    const postTextChange = (e: React.FormEvent<HTMLInputElement>) => {
+        const currentText = e.currentTarget.textContent;
+      
+        setPreviewData((prevState: any) => ({
+          ...prevState,
+          text: currentText
+        }));
+      
+        setTextLenght(currentText!.length);
+      };
 
   function MediaContainer(){
     useEffect(() => {
@@ -205,16 +217,32 @@ const addImage = (newImage: string) => {
       )
     }
 
-function createpost(){
+function createPost(){
+    const createPostObj = {
+        images: previewData.images,
+        text: previewData.text
+    }
+    
+    fetch(`${pikoSelector.api}/api/post/create`, { 
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(createPostObj)
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data);
+        })
+        .catch((error) => console.error("error:", error));
 
 }
 
 const [progressLayer, setProgressLayer] = useState<any>([])
 
-function ProgressContainer(){ //potentially for removal
+function ProgressContainer(){
 
-
-      
     return(
         <div className="upload-progress">
 
@@ -285,7 +313,7 @@ function ProgressContainer(){ //potentially for removal
                         </div>
 
                         <div className="edit-option">
-                            <button>create post</button>
+                            <button onClick={createPost}>create post</button>
                         </div>
 
                     </div>     
