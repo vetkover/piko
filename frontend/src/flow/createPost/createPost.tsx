@@ -13,11 +13,132 @@ function CreatePost() { //code refactoring urgently needed... sometime in the fu
 
 const [previewData, setPreviewData] = useState<any>({
     images: [],
+    sounds: ["https://rr2---sn-i5heen7s.googlevideo.com/videoplayback?expire=1708912889&ei=mZzbZbrEBPSJ6dsP9Lu2iA8&ip=193.8.238.210&id=o-AENh1XYuuOniBdFFtOiHQS3CZ6xp9_LewusCfXAL7HKm&itag=18&source=youtube&requiressl=yes&xpc=EgVo2aDSNQ%3D%3D&mh=6D&mm=31%2C29&mn=sn-i5heen7s%2Csn-5hneknek&ms=au%2Crdu&mv=m&mvi=2&pl=24&gcr=nl&initcwndbps=380000&spc=UWF9f3UBHz1v94CfJgI7SX1rLX6WhGsb6cxDgiUqHdbYHbA&vprv=1&svpuc=1&mime=video%2Fmp4&cnr=14&ratebypass=yes&dur=208.027&lmt=1707793618245805&mt=1708891012&fvip=5&fexp=24007246&c=ANDROID&txp=4538434&sparams=expire%2Cei%2Cip%2Cid%2Citag%2Csource%2Crequiressl%2Cxpc%2Cgcr%2Cspc%2Cvprv%2Csvpuc%2Cmime%2Ccnr%2Cratebypass%2Cdur%2Clmt&sig=AJfQdSswRAIgcni6cCWMjkxfJVA1qGpt3FfeCgu79weDnOOvYnhk06wCIE0C91MCtIa7izgAg34hb-7of_IPI-RDHGhMcZ4BRHKm&lsparams=mh%2Cmm%2Cmn%2Cms%2Cmv%2Cmvi%2Cpl%2Cinitcwndbps&lsig=APTiJQcwRgIhAP1adF8NuaZ87YuhGXu3fZsW2XC3FZiKNrFIuv9P_yjlAiEAjmvcdEZl7-WyBIJuJXaILephDcVtEjg9KjmR30ACatQ%3D&title=Men%20At%20Work%20-%20Who%20Can%20It%20Be%20Now%3F%20(Video%20Version)"],
     text: ""
 })
 
 useEffect(() => {
 }, [previewData]);
+
+ function SoundContainer(){
+    useEffect(() => {
+    }, [previewData]);
+
+    const testSound = useRef<any>();
+    const timelineContainer = useRef<any>();
+    const timelineCurrent = useRef<any>()
+    const timelineBufer = useRef<any>()
+
+    const [width, setWidth] = useState(0);
+    useEffect(() => {
+        if (timelineContainer.current) {
+            setWidth(timelineContainer.current.offsetWidth);
+        }
+      }, [timelineContainer.current]);
+
+      useEffect(() => {
+        if (testSound.current) {
+            testSound.current.addEventListener('timeupdate', currentTime);
+        }
+    
+        return () => {
+            if (testSound.current) {
+                testSound.current.removeEventListener('timeupdate', currentTime);
+            }
+        };
+    }, [testSound.current]);
+
+    const timeLineBuffer = () => {
+        if (testSound.current) {
+            const current = testSound.current.currentTime;
+            const duration = testSound.current.duration;
+            const buffered = testSound.current.buffered;
+    
+            for (let i = 0; i < buffered.length; i++) {
+                if (current >= buffered.start(i) && current <= buffered.end(i)) {
+                    timelineBufer.current.style.width = (100 / (duration / buffered.end(i))) + "%";
+                }
+            }
+        }
+    };
+    
+    const currentTime = () => {
+        if (testSound.current) {
+            const now = testSound.current.currentTime;
+            const duration = testSound.current.duration;
+    
+            timeLineBuffer();
+            timelineCurrent.current.style.width = (now / duration) * 100 + '%';
+        }
+    };
+
+    const removeSound = (soundToRemove: string) => {
+        setPreviewData((prevState: {sounds:any;}) => ({
+          ...prevState,
+          sounds: prevState.sounds.filter((sound: string) => sound !== soundToRemove)
+        }));
+      };
+    
+      const addSound = (newSound: string) => {
+        setPreviewData((prevState: { sounds: any; }) => {
+            if (!prevState.sounds.includes(newSound)) {
+                return {
+                    ...prevState,
+                    images: [...prevState.sounds, newSound],
+                };
+            }
+            return prevState;
+        });
+    };
+
+    const play = ()=> {
+        if(!testSound.current.paused){
+            testSound.current.pause()
+        } else {
+            testSound.current.play()
+        }
+    }
+
+    const changeTime = (event :React.MouseEvent) => {
+        const rect = timelineContainer.current.getBoundingClientRect();
+        const x = event.clientX - rect.left;
+        const duration = testSound?.current.duration;
+        console.log(((x/width)*100)/100 * duration)
+        testSound.current.currentTime  = ((x/width)*100)/100 * duration
+      };
+    
+
+    return (
+        <React.Fragment>
+            <div className="sound-container-body">
+                {previewData.sounds.map((value: string)=>{
+                    return(
+                    <div className="sound-container" key={value}>
+
+                        <audio preload="metadata" ref={testSound} id="sound" src={value}/>
+
+                        <div className="left-control">
+                            
+                            <div className="play-control"> 
+                                <button onClick={play} id="play-button"/>
+                             </div>
+                        </div>
+
+                        <div className="middle-control"> 
+                            <div onClick={changeTime} ref={timelineContainer} className="timeline-container">
+                                    <div className="timeline-background" />
+                                    <div ref={timelineBufer} className="timeline-bufer" />
+                                    <div ref={timelineCurrent} className="timeline-curent" />
+                                    
+                                 </div> 
+                        </div>
+                    </div>
+                    )
+                })}
+            </div>
+        </React.Fragment>
+    )
+ }
 
 function uploadMedia(event: React.ChangeEvent<HTMLInputElement>) {
     const files = event.currentTarget.files;
@@ -79,6 +200,7 @@ const addImage = (newImage: string) => {
         return prevState;
     });
 };
+
   const removeImage = (imageToRemove: string) => {
     setPreviewData((prevState: {images:any;}) => ({
       ...prevState,
@@ -212,6 +334,7 @@ const addImage = (newImage: string) => {
             <div  className="media-container">
                 <RowCalc />
             </div>
+
           </div>
         </React.Fragment>
       )
@@ -297,6 +420,7 @@ function ProgressContainer(){
                             </div>
                             <MediaContainer />
                         </div>
+                        <SoundContainer />
                     </div>
                     </div> 
                     <div className="edit-options-container">
