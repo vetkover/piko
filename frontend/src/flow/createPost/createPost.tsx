@@ -21,7 +21,13 @@ const [previewData, setPreviewData] = useState<any>({
     sounds: [{ 
         title: "неизвестно - без имени",
         src: "https://rr5---sn-ab5l6ndy.googlevideo.com/videoplayback?expire=1709133937&ei=EfzeZc2fM6KA_9EP-sieuAE&ip=93.120.113.225&id=o-AHltoffr-deyNJzOoaSyDtNO-nnlGCVXm5tqy3brtb6s&itag=22&source=youtube&requiressl=yes&xpc=EgVo2aDSNQ%3D%3D&mh=BW&mm=31%2C29&mn=sn-ab5l6ndy%2Csn-ab5sznzs&ms=au%2Crdu&mv=m&mvi=5&pl=21&initcwndbps=278750&spc=UWF9f56tnDmF3vw6VxPmmaJngyfP-zntuqzr60Z3Imy4jY4&vprv=1&svpuc=1&mime=video%2Fmp4&cnr=14&ratebypass=yes&dur=369.266&lmt=1705714710078620&mt=1709111820&fvip=3&fexp=24007246&c=ANDROID&txp=5532434&sparams=expire%2Cei%2Cip%2Cid%2Citag%2Csource%2Crequiressl%2Cxpc%2Cspc%2Cvprv%2Csvpuc%2Cmime%2Ccnr%2Cratebypass%2Cdur%2Clmt&sig=AJfQdSswRQIhAJNnTsMjRDP0zq9gTcGwqd0EaI1NsaK3Rmnoq45nP1C7AiBZpEvM72mNKm8eIWFA5zAQF58j0rn64oDfgEImUFhjaQ%3D%3D&lsparams=mh%2Cmm%2Cmn%2Cms%2Cmv%2Cmvi%2Cpl%2Cinitcwndbps&lsig=APTiJQcwRAIgD1QjB110xyV9yvMh_rg6UJLaNW-TVr5Q1fFWI6ImbZQCIG5lF2iJhrzqC2UFmX89Kr0WfmtCL-FQ7ufjfINolklh&title=Kikuo%20-%20%E3%81%82%E3%81%AA%E3%81%90%E3%82%89%E3%81%90%E3%82%89%E3%81%97"
-    }],
+    },
+    { 
+        title: "old doll",
+        src: "https://rr2---sn-5hnekn7z.googlevideo.com/videoplayback?expire=1709138974&ei=vg_fZenIJc-N6dsP9pCzsAE&ip=193.32.8.31&id=o-AE-mKwf5PUEtfbLifHI2DNPBr-rjav2guXvz9NPvoNSo&itag=22&source=youtube&requiressl=yes&xpc=EgVo2aDSNQ%3D%3D&mh=yx&mm=31%2C26&mn=sn-5hnekn7z%2Csn-i5heen7d&ms=au%2Conr&mv=m&mvi=2&pl=24&gcr=nl&initcwndbps=383750&spc=UWF9fxqOFXcbra7bhwPFef2FtoeTOmlolnYcLKMJ0EcbxeI&vprv=1&svpuc=1&mime=video%2Fmp4&cnr=14&ratebypass=yes&dur=99.520&lmt=1706467355504479&mt=1709117100&fvip=4&fexp=24007246&c=ANDROID&txp=2318224&sparams=expire%2Cei%2Cip%2Cid%2Citag%2Csource%2Crequiressl%2Cxpc%2Cgcr%2Cspc%2Cvprv%2Csvpuc%2Cmime%2Ccnr%2Cratebypass%2Cdur%2Clmt&sig=AJfQdSswRQIgaCAQE58xlB1snzYCSF2pA9PqfeVs3NBAJHAFf_OBcVsCIQDSj1tmIx4KdmSCTOWnrJmet4ydzq7X_OMVrz8iK_weEg%3D%3D&lsparams=mh%2Cmm%2Cmn%2Cms%2Cmv%2Cmvi%2Cpl%2Cinitcwndbps&lsig=APTiJQcwRQIgPr54YmCB86ZuaEvxtf2BKK3iZidnqMlDn8vyc6vGjRECIQCXJEK0WrhVaYvIW82swUhZ2vd-2dDkSaeUNOww-_QsvA%3D%3D&title=Old%20Doll"
+    }
+
+],
     text: ""
 })
 
@@ -29,109 +35,133 @@ useEffect(() => {
 }, [previewData]);
 
  function SoundContainer(){
+
+
+    const playerRefArray = useRef<(HTMLAudioElement | null)[]>([]);
+
+    const timelineContainer = useRef<any>([]);
+    const timelineCurrent = useRef<any>([])
+    const timelineBufer = useRef<any>([])
+    const playSVG = useRef<any>([])
+
+    const [width, setWidth] = useState([0]);
+    const [duration, setDuration] = useState(["0:00"]);
+
     useEffect(() => {
-        testSound.current.addEventListener('loadedmetadata', currentTime);
-    }, [previewData.sounds]);
-
-    const testSound = useRef<any>();
-    const timelineContainer = useRef<any>();
-    const timelineCurrent = useRef<any>()
-    const timelineBufer = useRef<any>()
-    const playSVG = useRef<any>()
-
-    const [width, setWidth] = useState(0);
-    const [duration, setDuration] = useState("0:00");
-
-    useEffect(() => {
-        if (timelineContainer.current) {
-            setWidth(timelineContainer.current.offsetWidth);
-        }
-      }, [timelineContainer.current]);
-
-      useEffect(() => {
-        if (testSound.current) {
-            testSound.current.addEventListener('timeupdate', currentTime);
-        }
-    
-        return () => {
-            if (testSound.current) {
-                testSound.current.removeEventListener('timeupdate', currentTime);
+        for(let index = 0; index < playerRefArray.current.length; index++){
+            if (playerRefArray.current[index]) {
+                playerRefArray.current[index]!.addEventListener('loadedmetadata', () => currentTime(index));
             }
-        };
-    }, [testSound.current]);
+    }
+}, [previewData.sounds]);
+
+useEffect(() => {
+    for (let index = 0; index < playerRefArray.current.length; index++) {
+      if (timelineContainer.current[index]) {
+        setWidth(timelineContainer.current[index].offsetWidth);
+      }
+    }
+  }, [timelineContainer]);
+
+  useEffect(() => {
+    for (let index = 0; index < playerRefArray.current.length; index++) {
+      if (playerRefArray.current[index]) {
+        playerRefArray.current[index]!.addEventListener('timeupdate', () => currentTime(index));
+      }
+    }
+  
+    return () => {
+      for (let index = 0; index < playerRefArray.current.length; index++) {
+        if (playerRefArray.current[index]) {
+          playerRefArray.current[index]!.removeEventListener('timeupdate', () => currentTime(index));
+        }
+      }
+    };
+  }, [playerRefArray]);
+  
 
     const timeLineBuffer = () => {
-        if (testSound.current) {
-            const current = testSound.current.currentTime;
-            const duration = testSound.current.duration;
-            const buffered = testSound.current.buffered;
+                for(let index = 0; index < playerRefArray.current.length; index++){
+        if (playerRefArray.current[index]) {
+            const current = playerRefArray.current[index]!.currentTime;
+            const duration = playerRefArray.current[index]!.duration;
+            const buffered = playerRefArray.current[index]!.buffered;
     
             for (let i = 0; i < buffered.length; i++) {
                 if (current >= buffered.start(i) && current <= buffered.end(i)) {
-                    timelineBufer.current.style.width = (100 / (duration / buffered.end(i))) + "%";
+                    timelineBufer.current[index].style.width = (100 / (duration / buffered.end(i))) + "%";
                 }
             }
         }
+    }
     };
     
-    const currentTime = () => {
-        if (testSound.current) {
-            const now = testSound.current.currentTime;
-            const duration = testSound.current.duration;
+    const currentTime = (index: number) => {
+        if (playerRefArray.current[index]) {
+            const now = playerRefArray.current[index]!.currentTime;
+            const duration = playerRefArray.current[index]!.duration;
             timeLineBuffer();
-            timelineCurrent.current.style.width = (now / duration) * 100 + '%';
+            timelineCurrent.current[index].style.width = (now / duration) * 100 + '%';
 
                 const minutes = Math.floor((duration - now) / 60);
                 const seconds = Math.floor((duration - now) % 60);
-                setDuration(`${minutes}:${seconds < 10 ? `0${seconds}` : seconds}`);       
+                
+                setDuration((prevDuration) => {
+                    const updatedDuration = [...prevDuration];
+                    updatedDuration[index] = `${minutes}:${seconds < 10 ? `0${seconds}` : seconds}`;
+                    return updatedDuration;
+                  });
         }
     };
 
-    const play = ()=> {
-        if(!testSound.current.paused){
-            playSVG.current.setAttribute("d", svg.play)
-            testSound.current.pause()
+    const play = (index: number)=> {
+        if(!playerRefArray.current[index]!.paused){
+            playSVG.current[index]?.setAttribute("d", svg.play)
+            playerRefArray.current[index]!.pause()
         } else {
-            testSound.current.play()
-            playSVG.current.setAttribute("d", svg.pause)
+            playerRefArray.current[index]!.play()
+            playSVG.current[index]?.setAttribute("d", svg.pause)
         }
     }
 
-    const changeTime = (event :React.MouseEvent) => {
-        const rect = timelineContainer.current.getBoundingClientRect();
-        const x = event.clientX - rect.left;
-        const duration = testSound?.current.duration;
-        console.log(((x/width)*100)/100 * duration)
-        testSound.current.currentTime = ((x/width)*100)/100 * duration
+    const changeTime = (event: React.MouseEvent<HTMLDivElement>, index: number) => {
+        const rect = timelineContainer.current[index]?.getBoundingClientRect();
+        const x = event.nativeEvent.clientX - rect?.left;
+        if (typeof x === 'number' && typeof width === 'number' && playerRefArray.current[index]) {
+          const duration = playerRefArray.current[index]!.duration;
+          const newTime = (x / width) * duration;
+          playerRefArray.current[index]!.currentTime = newTime;
+        }
       };
+      
     
 
     return (
         <React.Fragment>
             <div className="sound-container-body">
-                {previewData.sounds.map((value: any)=>{
+                {previewData.sounds.map((value: any, index: number)=>{
                     return(
                     <div className="sound-container" key={value.src}>
 
-                        <audio preload="metadata" ref={testSound} id="sound" src={value.src}/>
+                        <audio preload="metadata" ref={(object) => playerRefArray.current[index] = object} id="sound" src={value.src}/>
 
                         <div className="left-control">
                             
                             <div className="play-control"> 
-                                <button onClick={play} id="play-button"/>
+                                <button onClick={() => play(index)} id="play-button"/>
                                 <svg id="svg-button" viewBox="0 0 50 50">
-                                    <path ref={playSVG} id="play-svg" d="M8.5,2.99v43.88c0,0.66,0.74,1.05,1.29,0.68l31.73-21.87c0.47-0.33,0.47-1.03,0-1.35L9.79,2.31 C9.25, 1.93, 8.5, 2.32, 8.5, 2.99z" />
+                                    <path ref={(object) => playSVG.current[index] = object} id="play-svg" d="M8.5,2.99v43.88c0,0.66,0.74,1.05,1.29,0.68l31.73-21.87c0.47-0.33,0.47-1.03,0-1.35L9.79,2.31 C9.25, 1.93, 8.5, 2.32, 8.5, 2.99z" />
                                 </svg>
                              </div>
-                            <div className="duration"> {duration} </div>
+                            <div className="duration"> {duration[index]} </div>
                         </div>
 
                         <div className="middle-control">
                             <div className="soundName"> {value.title} </div> 
-                            <div onClick={changeTime} ref={timelineContainer} className="timeline-container">
+                            <div onClick={(event) => changeTime(event, index)} ref={(object) => timelineContainer.current[index] = object} className="timeline-container">
                                     <div className="timeline-background" />
-                                    <div ref={timelineBufer} className="timeline-bufer" />
-                                    <div ref={timelineCurrent} className="timeline-curent" />
+                                    <div ref={(object) => timelineBufer.current[index] = object} className="timeline-bufer" />
+                                    <div ref={(object) => timelineCurrent.current[index] = object} className="timeline-curent" />
                             </div> 
                         </div>
                     </div>
@@ -373,7 +403,6 @@ function ProgressContainer(){
         <div className="upload-progress">
 
         {progressLayer.map((value: any, index: any) => {
-            console.log(value)
             return (
                 <div className="progress-container" key={value.totalK}>
                 <svg className="progress" viewBox="0 0 36 36">
