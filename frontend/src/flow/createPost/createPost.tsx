@@ -5,6 +5,11 @@ import './createPost.scss'
 import imageIco from './imageIco.svg'
 import xIco from './xIco.svg'
 
+const svg = {
+    pause: "M42,2.98v43.54c0,0.54-0.71,0.98-1.59,0.98h-7.08c-0.88,0-1.59-0.44-1.59-0.98V2.98 c0-0.54,0.71-0.98,1.59-0.98h7.08C41.29,2,42,2.44,42,2.98z M18.62,2.98v43.54c0,0.54-0.71,0.98-1.59,0.98H9.96c-0.88,0-1.59-0.44-1.59-0.98V2.98C8.37,2.44,9.08,2,9.96,2 h7.08C17.91,2,18.62,2.44,18.62,2.98z",
+    play: "M8.5,2.99v43.88c0,0.66,0.74,1.05,1.29,0.68l31.73-21.87c0.47-0.33,0.47-1.03,0-1.35L9.79,2.31 C9.25, 1.93, 8.5, 2.32, 8.5, 2.99z",
+}
+
 function CreatePost() { //code refactoring urgently needed... sometime in the future :3
   const pikoSelector = useSelector((state: any) => state.pikoset)
   const whoamiSelector = useSelector((state: any) => state.whoami)
@@ -13,7 +18,10 @@ function CreatePost() { //code refactoring urgently needed... sometime in the fu
 
 const [previewData, setPreviewData] = useState<any>({
     images: [],
-    sounds: ["https://rr2---sn-i5heen7s.googlevideo.com/videoplayback?expire=1708912889&ei=mZzbZbrEBPSJ6dsP9Lu2iA8&ip=193.8.238.210&id=o-AENh1XYuuOniBdFFtOiHQS3CZ6xp9_LewusCfXAL7HKm&itag=18&source=youtube&requiressl=yes&xpc=EgVo2aDSNQ%3D%3D&mh=6D&mm=31%2C29&mn=sn-i5heen7s%2Csn-5hneknek&ms=au%2Crdu&mv=m&mvi=2&pl=24&gcr=nl&initcwndbps=380000&spc=UWF9f3UBHz1v94CfJgI7SX1rLX6WhGsb6cxDgiUqHdbYHbA&vprv=1&svpuc=1&mime=video%2Fmp4&cnr=14&ratebypass=yes&dur=208.027&lmt=1707793618245805&mt=1708891012&fvip=5&fexp=24007246&c=ANDROID&txp=4538434&sparams=expire%2Cei%2Cip%2Cid%2Citag%2Csource%2Crequiressl%2Cxpc%2Cgcr%2Cspc%2Cvprv%2Csvpuc%2Cmime%2Ccnr%2Cratebypass%2Cdur%2Clmt&sig=AJfQdSswRAIgcni6cCWMjkxfJVA1qGpt3FfeCgu79weDnOOvYnhk06wCIE0C91MCtIa7izgAg34hb-7of_IPI-RDHGhMcZ4BRHKm&lsparams=mh%2Cmm%2Cmn%2Cms%2Cmv%2Cmvi%2Cpl%2Cinitcwndbps&lsig=APTiJQcwRgIhAP1adF8NuaZ87YuhGXu3fZsW2XC3FZiKNrFIuv9P_yjlAiEAjmvcdEZl7-WyBIJuJXaILephDcVtEjg9KjmR30ACatQ%3D&title=Men%20At%20Work%20-%20Who%20Can%20It%20Be%20Now%3F%20(Video%20Version)"],
+    sounds: [{ 
+        title: "неизвестно - без имени",
+        src: "https://rr5---sn-ab5l6ndy.googlevideo.com/videoplayback?expire=1709133937&ei=EfzeZc2fM6KA_9EP-sieuAE&ip=93.120.113.225&id=o-AHltoffr-deyNJzOoaSyDtNO-nnlGCVXm5tqy3brtb6s&itag=22&source=youtube&requiressl=yes&xpc=EgVo2aDSNQ%3D%3D&mh=BW&mm=31%2C29&mn=sn-ab5l6ndy%2Csn-ab5sznzs&ms=au%2Crdu&mv=m&mvi=5&pl=21&initcwndbps=278750&spc=UWF9f56tnDmF3vw6VxPmmaJngyfP-zntuqzr60Z3Imy4jY4&vprv=1&svpuc=1&mime=video%2Fmp4&cnr=14&ratebypass=yes&dur=369.266&lmt=1705714710078620&mt=1709111820&fvip=3&fexp=24007246&c=ANDROID&txp=5532434&sparams=expire%2Cei%2Cip%2Cid%2Citag%2Csource%2Crequiressl%2Cxpc%2Cspc%2Cvprv%2Csvpuc%2Cmime%2Ccnr%2Cratebypass%2Cdur%2Clmt&sig=AJfQdSswRQIhAJNnTsMjRDP0zq9gTcGwqd0EaI1NsaK3Rmnoq45nP1C7AiBZpEvM72mNKm8eIWFA5zAQF58j0rn64oDfgEImUFhjaQ%3D%3D&lsparams=mh%2Cmm%2Cmn%2Cms%2Cmv%2Cmvi%2Cpl%2Cinitcwndbps&lsig=APTiJQcwRAIgD1QjB110xyV9yvMh_rg6UJLaNW-TVr5Q1fFWI6ImbZQCIG5lF2iJhrzqC2UFmX89Kr0WfmtCL-FQ7ufjfINolklh&title=Kikuo%20-%20%E3%81%82%E3%81%AA%E3%81%90%E3%82%89%E3%81%90%E3%82%89%E3%81%97"
+    }],
     text: ""
 })
 
@@ -22,14 +30,18 @@ useEffect(() => {
 
  function SoundContainer(){
     useEffect(() => {
-    }, [previewData]);
+        testSound.current.addEventListener('loadedmetadata', currentTime);
+    }, [previewData.sounds]);
 
     const testSound = useRef<any>();
     const timelineContainer = useRef<any>();
     const timelineCurrent = useRef<any>()
     const timelineBufer = useRef<any>()
+    const playSVG = useRef<any>()
 
     const [width, setWidth] = useState(0);
+    const [duration, setDuration] = useState("0:00");
+
     useEffect(() => {
         if (timelineContainer.current) {
             setWidth(timelineContainer.current.offsetWidth);
@@ -66,36 +78,22 @@ useEffect(() => {
         if (testSound.current) {
             const now = testSound.current.currentTime;
             const duration = testSound.current.duration;
-    
             timeLineBuffer();
             timelineCurrent.current.style.width = (now / duration) * 100 + '%';
-        }
-    };
 
-    const removeSound = (soundToRemove: string) => {
-        setPreviewData((prevState: {sounds:any;}) => ({
-          ...prevState,
-          sounds: prevState.sounds.filter((sound: string) => sound !== soundToRemove)
-        }));
-      };
-    
-      const addSound = (newSound: string) => {
-        setPreviewData((prevState: { sounds: any; }) => {
-            if (!prevState.sounds.includes(newSound)) {
-                return {
-                    ...prevState,
-                    images: [...prevState.sounds, newSound],
-                };
-            }
-            return prevState;
-        });
+                const minutes = Math.floor((duration - now) / 60);
+                const seconds = Math.floor((duration - now) % 60);
+                setDuration(`${minutes}:${seconds < 10 ? `0${seconds}` : seconds}`);       
+        }
     };
 
     const play = ()=> {
         if(!testSound.current.paused){
+            playSVG.current.setAttribute("d", svg.play)
             testSound.current.pause()
         } else {
             testSound.current.play()
+            playSVG.current.setAttribute("d", svg.pause)
         }
     }
 
@@ -104,33 +102,37 @@ useEffect(() => {
         const x = event.clientX - rect.left;
         const duration = testSound?.current.duration;
         console.log(((x/width)*100)/100 * duration)
-        testSound.current.currentTime  = ((x/width)*100)/100 * duration
+        testSound.current.currentTime = ((x/width)*100)/100 * duration
       };
     
 
     return (
         <React.Fragment>
             <div className="sound-container-body">
-                {previewData.sounds.map((value: string)=>{
+                {previewData.sounds.map((value: any)=>{
                     return(
-                    <div className="sound-container" key={value}>
+                    <div className="sound-container" key={value.src}>
 
-                        <audio preload="metadata" ref={testSound} id="sound" src={value}/>
+                        <audio preload="metadata" ref={testSound} id="sound" src={value.src}/>
 
                         <div className="left-control">
                             
                             <div className="play-control"> 
                                 <button onClick={play} id="play-button"/>
+                                <svg id="svg-button" viewBox="0 0 50 50">
+                                    <path ref={playSVG} id="play-svg" d="M8.5,2.99v43.88c0,0.66,0.74,1.05,1.29,0.68l31.73-21.87c0.47-0.33,0.47-1.03,0-1.35L9.79,2.31 C9.25, 1.93, 8.5, 2.32, 8.5, 2.99z" />
+                                </svg>
                              </div>
+                            <div className="duration"> {duration} </div>
                         </div>
 
-                        <div className="middle-control"> 
+                        <div className="middle-control">
+                            <div className="soundName"> {value.title} </div> 
                             <div onClick={changeTime} ref={timelineContainer} className="timeline-container">
                                     <div className="timeline-background" />
                                     <div ref={timelineBufer} className="timeline-bufer" />
                                     <div ref={timelineCurrent} className="timeline-curent" />
-                                    
-                                 </div> 
+                            </div> 
                         </div>
                     </div>
                     )
@@ -343,6 +345,7 @@ const addImage = (newImage: string) => {
 function createPost(){
     const createPostObj = {
         images: previewData.images,
+        sounds: previewData.sounds,
         text: previewData.text
     }
     
