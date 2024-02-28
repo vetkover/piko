@@ -16,13 +16,19 @@ const ruleSet = {
     },
     media: {
       fileSize: 1024 * 1024 * 500,
-      type: ['image/png', 'image/jpeg', 'image/jpg']
+      type: ['image/png', 'image/jpeg', 'image/jpg', 'audio/mpeg']
   }
 }
 
 router.post('/temp/:type', async (req, res) => {
-    const contentType = req.params.type;
-    const rule = ruleSet[contentType]
+  const contentType = req.params.type;
+  const rule = ruleSet[contentType];
+
+  if (!rule) {
+      return res.status(400).json({message: "wrong type", status: false});
+  }
+
+    
 
     if (!rule) {
         return res.status(400).json({message: "wrong type", status: false});
@@ -59,6 +65,7 @@ router.post('/temp/:type', async (req, res) => {
         res.status(500).json({status: false});
       } else {
 
+        console.log(req.file)
         const fileObject = {
             originalName: req.file.originalname,
             name: req.file.filename.split('.')[0],
@@ -69,6 +76,7 @@ router.post('/temp/:type', async (req, res) => {
         tempUpload(fileObject)
         res.json({
             status: true,
+            originalName: fileObject.originalName,
             tempToken: fileObject.name
         });
       }

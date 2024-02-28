@@ -3,6 +3,7 @@ import { getText } from "../../components/languageProcessing/localize";
 import { useDispatch, useSelector } from "react-redux";
 import './createPost.scss'
 import imageIco from './imageIco.svg'
+import soundIco from './soundIco.svg'
 import xIco from './xIco.svg'
 
 const svg = {
@@ -16,23 +17,23 @@ function CreatePost() { //code refactoring urgently needed... sometime in the fu
 
   const postText = useRef<any>()
 
-const [previewData, setPreviewData] = useState<any>({
-    images: [],
-    sounds: [{ 
-        title: "неизвестно - без имени",
-        src: "https://rr5---sn-ab5l6ndy.googlevideo.com/videoplayback?expire=1709133937&ei=EfzeZc2fM6KA_9EP-sieuAE&ip=93.120.113.225&id=o-AHltoffr-deyNJzOoaSyDtNO-nnlGCVXm5tqy3brtb6s&itag=22&source=youtube&requiressl=yes&xpc=EgVo2aDSNQ%3D%3D&mh=BW&mm=31%2C29&mn=sn-ab5l6ndy%2Csn-ab5sznzs&ms=au%2Crdu&mv=m&mvi=5&pl=21&initcwndbps=278750&spc=UWF9f56tnDmF3vw6VxPmmaJngyfP-zntuqzr60Z3Imy4jY4&vprv=1&svpuc=1&mime=video%2Fmp4&cnr=14&ratebypass=yes&dur=369.266&lmt=1705714710078620&mt=1709111820&fvip=3&fexp=24007246&c=ANDROID&txp=5532434&sparams=expire%2Cei%2Cip%2Cid%2Citag%2Csource%2Crequiressl%2Cxpc%2Cspc%2Cvprv%2Csvpuc%2Cmime%2Ccnr%2Cratebypass%2Cdur%2Clmt&sig=AJfQdSswRQIhAJNnTsMjRDP0zq9gTcGwqd0EaI1NsaK3Rmnoq45nP1C7AiBZpEvM72mNKm8eIWFA5zAQF58j0rn64oDfgEImUFhjaQ%3D%3D&lsparams=mh%2Cmm%2Cmn%2Cms%2Cmv%2Cmvi%2Cpl%2Cinitcwndbps&lsig=APTiJQcwRAIgD1QjB110xyV9yvMh_rg6UJLaNW-TVr5Q1fFWI6ImbZQCIG5lF2iJhrzqC2UFmX89Kr0WfmtCL-FQ7ufjfINolklh&title=Kikuo%20-%20%E3%81%82%E3%81%AA%E3%81%90%E3%82%89%E3%81%90%E3%82%89%E3%81%97"
+    const [imagesData, setImagesData] = useState<any>([]);
+    const [soundsData, setSoundsData] = useState<any>([{ 
+        title: "Kikuo - あなぐらぐらし",
+        src: "https://rr2---sn-uxaxjvhxbt2u-j5pr.googlevideo.com/videoplayback?expire=1709170714&ei=uovfZd7JHLKPi9oP9qucwAs&ip=197.56.225.82&id=o-AGHkvn5-HV_chKZvTrtCjzWF_N4wWCl98wnsSAOsQQWX&itag=22&source=youtube&requiressl=yes&xpc=EgVo2aDSNQ%3D%3D&mh=BW&mm=31%2C29&mn=sn-uxaxjvhxbt2u-j5pr%2Csn-5hnednss&ms=au%2Crdu&mv=m&mvi=2&pl=19&initcwndbps=363750&spc=UWF9fxk9EQe9l-zlgod8usim9p0qNiPHx_KVOAOURttGZps&vprv=1&svpuc=1&mime=video%2Fmp4&cnr=14&ratebypass=yes&dur=369.266&lmt=1705714710078620&mt=1709148779&fvip=2&fexp=24007246&c=ANDROID&txp=5532434&sparams=expire%2Cei%2Cip%2Cid%2Citag%2Csource%2Crequiressl%2Cxpc%2Cspc%2Cvprv%2Csvpuc%2Cmime%2Ccnr%2Cratebypass%2Cdur%2Clmt&sig=AJfQdSswRgIhAOhGRLIKpQf2jf1bvYSeX87RH1VXAE2D2sHum5_2xbgoAiEAvg4X29wkCfAaZ7_pc5XJ_Nct245SaEdf4xPBUzbkvqg%3D&lsparams=mh%2Cmm%2Cmn%2Cms%2Cmv%2Cmvi%2Cpl%2Cinitcwndbps&lsig=APTiJQcwRgIhANcrcWmLoPrL4MFz2zTn7P5zonvIm3oOjRbpsuqbTXbnAiEAnafbfcxBS5GnAuvJCK6gAZCa78mZ5dn_yw9wrqxJtAY%3D&title=Kikuo%20-%20%E3%81%82%E3%81%AA%E3%81%90%E3%82%89%E3%81%90%E3%82%89%E3%81%97"
     },
     { 
-        title: "old doll",
-        src: "https://rr2---sn-5hnekn7z.googlevideo.com/videoplayback?expire=1709138974&ei=vg_fZenIJc-N6dsP9pCzsAE&ip=193.32.8.31&id=o-AE-mKwf5PUEtfbLifHI2DNPBr-rjav2guXvz9NPvoNSo&itag=22&source=youtube&requiressl=yes&xpc=EgVo2aDSNQ%3D%3D&mh=yx&mm=31%2C26&mn=sn-5hnekn7z%2Csn-i5heen7d&ms=au%2Conr&mv=m&mvi=2&pl=24&gcr=nl&initcwndbps=383750&spc=UWF9fxqOFXcbra7bhwPFef2FtoeTOmlolnYcLKMJ0EcbxeI&vprv=1&svpuc=1&mime=video%2Fmp4&cnr=14&ratebypass=yes&dur=99.520&lmt=1706467355504479&mt=1709117100&fvip=4&fexp=24007246&c=ANDROID&txp=2318224&sparams=expire%2Cei%2Cip%2Cid%2Citag%2Csource%2Crequiressl%2Cxpc%2Cgcr%2Cspc%2Cvprv%2Csvpuc%2Cmime%2Ccnr%2Cratebypass%2Cdur%2Clmt&sig=AJfQdSswRQIgaCAQE58xlB1snzYCSF2pA9PqfeVs3NBAJHAFf_OBcVsCIQDSj1tmIx4KdmSCTOWnrJmet4ydzq7X_OMVrz8iK_weEg%3D%3D&lsparams=mh%2Cmm%2Cmn%2Cms%2Cmv%2Cmvi%2Cpl%2Cinitcwndbps&lsig=APTiJQcwRQIgPr54YmCB86ZuaEvxtf2BKK3iZidnqMlDn8vyc6vGjRECIQCXJEK0WrhVaYvIW82swUhZ2vd-2dDkSaeUNOww-_QsvA%3D%3D&title=Old%20Doll"
+        title: "蛇塚透花 - 紺碧の桎梏",
+        src: "http://localhost:3002/cdn/testSound"
     }
+]);
+    const [textData, setTextData] = useState<any>("");
 
-],
-    text: ""
-})
+    
 
 useEffect(() => {
-}, [previewData]);
+    console.log(soundsData)
+}, [soundsData]);
 
  function SoundContainer(){
 
@@ -53,7 +54,7 @@ useEffect(() => {
                 playerRefArray.current[index]!.addEventListener('loadedmetadata', () => currentTime(index));
             }
     }
-}, [previewData.sounds]);
+}, [soundsData]);
 
 useEffect(() => {
     for (let index = 0; index < playerRefArray.current.length; index++) {
@@ -69,6 +70,7 @@ useEffect(() => {
         playerRefArray.current[index]!.addEventListener('timeupdate', () => currentTime(index));
       }
     }
+    
   
     return () => {
       for (let index = 0; index < playerRefArray.current.length; index++) {
@@ -114,6 +116,10 @@ useEffect(() => {
         }
     };
 
+    const replaySVG = (index: number) => {
+        playSVG.current[index]?.setAttribute("d", svg.play)
+    }
+
     const play = (index: number)=> {
         if(!playerRefArray.current[index]!.paused){
             playSVG.current[index]?.setAttribute("d", svg.play)
@@ -124,26 +130,26 @@ useEffect(() => {
         }
     }
 
+
     const changeTime = (event: React.MouseEvent<HTMLDivElement>, index: number) => {
-        const rect = timelineContainer.current[index]?.getBoundingClientRect();
-        const x = event.nativeEvent.clientX - rect?.left;
-        if (typeof x === 'number' && typeof width === 'number' && playerRefArray.current[index]) {
+        const offsetX = event.nativeEvent.offsetX;
+        const width = timelineContainer.current[index]?.clientWidth;
+    
+        if (typeof offsetX === 'number' && typeof width === 'number' && playerRefArray.current[index]) {
           const duration = playerRefArray.current[index]!.duration;
-          const newTime = (x / width) * duration;
+          const newTime = (offsetX / width) * duration;
           playerRefArray.current[index]!.currentTime = newTime;
         }
-      };
-      
+    };
     
-
     return (
         <React.Fragment>
             <div className="sound-container-body">
-                {previewData.sounds.map((value: any, index: number)=>{
+                {soundsData.map((value: any, index: number)=>{
                     return(
                     <div className="sound-container" key={value.src}>
 
-                        <audio preload="metadata" ref={(object) => playerRefArray.current[index] = object} id="sound" src={value.src}/>
+                        <audio preload="metadata" ref={(object) => playerRefArray.current[index] = object} id="sound" src={value.src} onEnded={() => {replaySVG(index)}}/>
 
                         <div className="left-control">
                             
@@ -172,7 +178,71 @@ useEffect(() => {
     )
  }
 
-function uploadMedia(event: React.ChangeEvent<HTMLInputElement>) {
+ function uploadSound(event: React.ChangeEvent<HTMLInputElement>) {
+    const files = event.currentTarget.files;
+    console.log(files)
+    if (files) {
+        let formData = new FormData();
+        formData.append('file', files[0]);
+        let xhr = new XMLHttpRequest();
+
+        let filename = files[0].name
+
+        xhr.upload.onprogress = function (event) {
+
+            setProgressLayer((prevState: any[]) => {
+                const index = prevState.findIndex(item => item.filename === filename);
+
+                const updatedProgress = prevState.map(item =>
+                    item.filename === filename ? { ...item, nowK: event.loaded, totalK: event.total } : item
+                );
+                if (event.loaded === event.total) {
+                    return updatedProgress.filter(item => item.filename !== filename);
+                }
+
+                if (index !== -1) {
+                  return prevState.map(item =>
+                    item.filename === filename ? { ...item, nowK: event.loaded, totalK: event.total } : item
+                  );
+                } else {
+                  return [...prevState, { filename: filename, nowK: event.loaded, totalK: event.total }];
+                }
+              });
+        };
+
+        xhr.open('POST', `${pikoSelector?.cdn}/temp/media`, true);
+        xhr.responseType = 'json';
+
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+                const data = xhr.response;
+
+                if (data.status) {
+                    addSound(`${pikoSelector?.cdn}/${data.tempToken}`, data.originalName);
+                }
+            }
+        };
+        
+        xhr.send(formData);
+    }
+}
+
+const addSound = (newSound: string, originalName: any) => {
+    setSoundsData((prevState: any) => {
+        if (!prevState.includes(newSound)) {
+            return [
+                ...prevState,
+                {
+                    title: originalName,
+                    src: newSound
+                }
+            ];
+        }
+        return prevState;
+    });
+};
+
+function uploadImage(event: React.ChangeEvent<HTMLInputElement>) {
     const files = event.currentTarget.files;
 
     if (files) {
@@ -222,31 +292,31 @@ function uploadMedia(event: React.ChangeEvent<HTMLInputElement>) {
 }
 
 const addImage = (newImage: string) => {
-    setPreviewData((prevState: { images: any; }) => {
-        if (!prevState.images.includes(newImage)) {
-            return {
+    setImagesData((prevState: any) => {
+        if (!prevState.includes(newImage)) {
+            return [
                 ...prevState,
-                images: [...prevState.images, newImage],
-            };
+                newImage
+            ];
         }
         return prevState;
     });
 };
 
-  const removeImage = (imageToRemove: string) => {
-    setPreviewData((prevState: {images:any;}) => ({
-      ...prevState,
-      images: prevState.images.filter((image: string) => image !== imageToRemove)
-    }));
-  };
+
+const removeImage = (imageToRemove: string) => {
+    setImagesData((prevState: any) => (
+        prevState.filter((image: string) => image !== imageToRemove)
+    ));
+};
+
 
     const [textLength, setTextLenght] = useState<number>(0)
     const postTextChange = (e: React.FormEvent<HTMLInputElement>) => {
         const currentText = e.currentTarget.textContent;
       
-        setPreviewData((prevState: any) => ({
-          ...prevState,
-          text: currentText
+        setTextData((prevState: any) => ({
+            currentText
         }));
       
         setTextLenght(currentText!.length);
@@ -254,10 +324,10 @@ const addImage = (newImage: string) => {
 
   function MediaContainer(){
     useEffect(() => {
-      }, [previewData]);
+      }, [imagesData]);
       
     function imageProcessing() {
-        return previewData.images.map((value: any, index: number) => {
+        return imagesData.map((value: any, index: number) => {
             const img = new Image();
             img.src = value;
     
@@ -374,9 +444,9 @@ const addImage = (newImage: string) => {
 
 function createPost(){
     const createPostObj = {
-        images: previewData.images,
-        sounds: previewData.sounds,
-        text: previewData.text
+        images: imagesData,
+        sounds: soundsData,
+        text: textData
     }
     
     fetch(`${pikoSelector.api}/api/post/create`, { 
@@ -460,8 +530,13 @@ function ProgressContainer(){
                         <ProgressContainer />
 
                         <div className="edit-option">
-                            <input onChange={uploadMedia} type="file" accept=".png,.jpeg,.jpg"></input>
+                            <input onChange={uploadImage} type="file" accept=".png,.jpeg,.jpg"></input>
                             <img id="img" src={imageIco} ></img>
+                        </div>
+
+                        <div className="edit-option">
+                            <input onChange={uploadSound} type="file" accept=".mp3"></input>
+                            <img id="img" src={soundIco} ></img>
                         </div>
 
                         <div className="edit-option">

@@ -180,7 +180,8 @@
 
             .sound-container-body{
                 display: flex;
-                flex-direction: column;
+                flex-direction: row;
+                flex-wrap: wrap;
 
                 .sound-container{
                     display: flex;
