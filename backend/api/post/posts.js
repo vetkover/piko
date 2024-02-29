@@ -9,8 +9,11 @@ router.get("/posts/:username", async (req, res) => {
     let username = req.params.username; 
     let data = await posts(username)
 
-    let obj = {}
+    let obj = {
 
+    }
+
+    obj.owner = username;
     obj.posts = data.posts
     obj.count = (data.posts).length
     res.json(obj);

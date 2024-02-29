@@ -4,8 +4,9 @@ import { useDispatch, useSelector } from "react-redux";
 import './createPost.scss'
 import imageIco from './imageIco.svg'
 import soundIco from './soundIco.svg'
+import videoIco from './videoIco.svg'
 import xIco from './xIco.svg'
-
+import PlayerModule from "../../components/dokoa-player/playerModule"
 const svg = {
     pause: "M42,2.98v43.54c0,0.54-0.71,0.98-1.59,0.98h-7.08c-0.88,0-1.59-0.44-1.59-0.98V2.98 c0-0.54,0.71-0.98,1.59-0.98h7.08C41.29,2,42,2.44,42,2.98z M18.62,2.98v43.54c0,0.54-0.71,0.98-1.59,0.98H9.96c-0.88,0-1.59-0.44-1.59-0.98V2.98C8.37,2.44,9.08,2,9.96,2 h7.08C17.91,2,18.62,2.44,18.62,2.98z",
     play: "M8.5,2.99v43.88c0,0.66,0.74,1.05,1.29,0.68l31.73-21.87c0.47-0.33,0.47-1.03,0-1.35L9.79,2.31 C9.25, 1.93, 8.5, 2.32, 8.5, 2.99z",
@@ -20,6 +21,7 @@ function CreatePost() { //code refactoring urgently needed... sometime in the fu
     const [imagesData, setImagesData] = useState<any>([]);
     const [soundsData, setSoundsData] = useState<any>([]);
     const [textData, setTextData] = useState<any>("");
+    const [videoData, setVideoData] = useState<any>("");
 
     
 
@@ -307,14 +309,81 @@ const removeImage = (imageToRemove: string) => {
     const postTextChange = (e: React.FormEvent<HTMLInputElement>) => {
         const currentText = e.currentTarget.textContent;
       
-        setTextData((prevState: any) => ({
+        setTextData((prevState: any) => (
             currentText
-        }));
+        ));
       
         setTextLenght(currentText!.length);
       };
 
-  function MediaContainer(){
+      function uploadVideo(event: React.ChangeEvent<HTMLInputElement>) {
+        const files = event.currentTarget.files;
+        console.log(files)
+        if (files) {
+            let formData = new FormData();
+            formData.append('file', files[0]);
+            let xhr = new XMLHttpRequest();
+    
+            let filename = files[0].name
+    
+            xhr.upload.onprogress = function (event) {
+    
+                setProgressLayer((prevState: any[]) => {
+                    const index = prevState.findIndex(item => item.filename === filename);
+    
+                    const updatedProgress = prevState.map(item =>
+                        item.filename === filename ? { ...item, nowK: event.loaded, totalK: event.total } : item
+                    );
+                    if (event.loaded === event.total) {
+                        return updatedProgress.filter(item => item.filename !== filename);
+                    }
+    
+                    if (index !== -1) {
+                      return prevState.map(item =>
+                        item.filename === filename ? { ...item, nowK: event.loaded, totalK: event.total } : item
+                      );
+                    } else {
+                      return [...prevState, { filename: filename, nowK: event.loaded, totalK: event.total }];
+                    }
+                  });
+            };
+    
+            xhr.open('POST', `${pikoSelector?.cdn}/temp/media`, true);
+            xhr.responseType = 'json';
+    
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) {
+                    const data = xhr.response;
+    
+                    if (data.status) {
+                        addVideo(`${pikoSelector?.cdn}/${data.tempToken}`);
+                    }
+                }
+            };
+            
+            xhr.send(formData);
+        }
+    }
+
+      function VideoContainer(){
+        return (
+            videoData !== "" ? (
+              <div className="dokoaplayer-container">
+                <PlayerModule link={videoData} />
+              </div>
+            ) : (
+              <React.Fragment />
+            )
+          );
+        }
+
+       const addVideo = (newVideo: string) => {
+        setVideoData((prevState: any) => {
+                return newVideo                 
+            }
+       )};
+
+  function ImageContainer(){
     useEffect(() => {
       }, [imagesData]);
       
@@ -438,6 +507,7 @@ function createPost(){
     const createPostObj = {
         images: imagesData,
         sounds: soundsData,
+        video: videoData,
         text: textData
     }
     
@@ -512,7 +582,8 @@ function ProgressContainer(){
                                 <div placeholder="placeholder" ref={postText} onInput={postTextChange} contentEditable="true" id="text">
                                 </div>
                             </div>
-                            <MediaContainer />
+                            <VideoContainer />
+                            <ImageContainer />
                         </div>
                         <SoundContainer />
                     </div>
@@ -524,6 +595,11 @@ function ProgressContainer(){
                         <div className="edit-option">
                             <input onChange={uploadImage} type="file" accept=".png,.jpeg,.jpg"></input>
                             <img id="img" src={imageIco} ></img>
+                        </div>
+
+                        <div className="edit-option">
+                            <input onChange={uploadVideo} type="file" accept=".mp4"></input>
+                            <img id="img" src={videoIco} ></img>
                         </div>
 
                         <div className="edit-option">

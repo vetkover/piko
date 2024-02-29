@@ -69,6 +69,7 @@ function P() {
     const pikoSelector = useSelector((state: any) => state.pikoset)
   
     const [userPosts, setUserPosts] = useState<any>()
+    console.log(userPosts)
   
     useEffect(() => {
       const fetchData = () => {
@@ -365,18 +366,19 @@ function P() {
                   <div className="body-container">
                       <div className="post-view">
                           <div className="left-corner">
-                          <img className='userAvatar' src={`${pikoSelector.cdn}/${whoamiSelector.avatar}`}/>
+                          <img className='userAvatar' src={`${pikoSelector.cdn}/${userData.avatar}`}/>
                           </div>
                           
                           <div className="middle-corner">
                               <div className="about-author">
                                   <div className="top">
                                       <div className="author">
-                                          {whoamiSelector.username}
+                                          {userPosts.owner}
                                       </div>
                                       <div className="time">
                                           {(() => {
-                                              const date = new Date();
+                                            console.log(userPosts.owner)
+                                              const date = new Date(obj.date);
                                               let formattedDate = date.toLocaleDateString('en-US', { day: '2-digit', month: '2-digit', year: 'numeric' });
                                               formattedDate = formattedDate.replace(/\//g, '.');
                                               return formattedDate;
