@@ -18,15 +18,7 @@ function CreatePost() { //code refactoring urgently needed... sometime in the fu
   const postText = useRef<any>()
 
     const [imagesData, setImagesData] = useState<any>([]);
-    const [soundsData, setSoundsData] = useState<any>([{ 
-        title: "Kikuo - あなぐらぐらし",
-        src: "https://rr2---sn-uxaxjvhxbt2u-j5pr.googlevideo.com/videoplayback?expire=1709170714&ei=uovfZd7JHLKPi9oP9qucwAs&ip=197.56.225.82&id=o-AGHkvn5-HV_chKZvTrtCjzWF_N4wWCl98wnsSAOsQQWX&itag=22&source=youtube&requiressl=yes&xpc=EgVo2aDSNQ%3D%3D&mh=BW&mm=31%2C29&mn=sn-uxaxjvhxbt2u-j5pr%2Csn-5hnednss&ms=au%2Crdu&mv=m&mvi=2&pl=19&initcwndbps=363750&spc=UWF9fxk9EQe9l-zlgod8usim9p0qNiPHx_KVOAOURttGZps&vprv=1&svpuc=1&mime=video%2Fmp4&cnr=14&ratebypass=yes&dur=369.266&lmt=1705714710078620&mt=1709148779&fvip=2&fexp=24007246&c=ANDROID&txp=5532434&sparams=expire%2Cei%2Cip%2Cid%2Citag%2Csource%2Crequiressl%2Cxpc%2Cspc%2Cvprv%2Csvpuc%2Cmime%2Ccnr%2Cratebypass%2Cdur%2Clmt&sig=AJfQdSswRgIhAOhGRLIKpQf2jf1bvYSeX87RH1VXAE2D2sHum5_2xbgoAiEAvg4X29wkCfAaZ7_pc5XJ_Nct245SaEdf4xPBUzbkvqg%3D&lsparams=mh%2Cmm%2Cmn%2Cms%2Cmv%2Cmvi%2Cpl%2Cinitcwndbps&lsig=APTiJQcwRgIhANcrcWmLoPrL4MFz2zTn7P5zonvIm3oOjRbpsuqbTXbnAiEAnafbfcxBS5GnAuvJCK6gAZCa78mZ5dn_yw9wrqxJtAY%3D&title=Kikuo%20-%20%E3%81%82%E3%81%AA%E3%81%90%E3%82%89%E3%81%90%E3%82%89%E3%81%97"
-    },
-    { 
-        title: "蛇塚透花 - 紺碧の桎梏",
-        src: "http://localhost:3002/cdn/testSound"
-    }
-]);
+    const [soundsData, setSoundsData] = useState<any>([]);
     const [textData, setTextData] = useState<any>("");
 
     

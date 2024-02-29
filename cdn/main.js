@@ -5,6 +5,9 @@ const app = express();
 
 const takeFile = require('./components/cdn/takeFile')
 const temp = require('./components/cdn/temp')
+const clearTemp = require('./components/mongoDB/clearTemp.js')
+
+clearTemp()
 
 app.use(express.json());
 app.use(function(req, res, next) {

@@ -16,19 +16,13 @@ const ruleSet = {
     },
     media: {
       fileSize: 1024 * 1024 * 500,
-      type: ['image/png', 'image/jpeg', 'image/jpg', 'audio/mpeg']
+      type: ['image/png', 'image/jpeg', 'image/jpg', 'audio/mpeg', 'video/mp4']
   }
 }
 
 router.post('/temp/:type', async (req, res) => {
   const contentType = req.params.type;
   const rule = ruleSet[contentType];
-
-  if (!rule) {
-      return res.status(400).json({message: "wrong type", status: false});
-  }
-
-    
 
     if (!rule) {
         return res.status(400).json({message: "wrong type", status: false});

@@ -24,6 +24,8 @@ async function createPost(postObj){
                 text: postObj.text,
                 images: postObj.images,
                 date: postObj.date,
+                sounds: postObj.sounds,
+                video: postObj.video,
                 status: "active",
                 id: await getNewId()
             }],

@@ -26,6 +26,7 @@ function getText(jsonKey: string) {
 }
 
 
+
 function updateUlang(cookieKey: string){
     setCookie("ulang",cookieKey)
     window.location.reload();

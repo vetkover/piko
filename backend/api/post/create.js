@@ -16,7 +16,9 @@ router.post("/create", async (req, res) => {
             username: DBuserData.username,
             text: data.text, 
             date: Date.now(), 
-            images: data.images, 
+            images: data.images,
+            sounds: data.sounds,
+            video: data.video
         }
         createPost(newPostObj)
         res.json(true)
