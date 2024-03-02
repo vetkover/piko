@@ -15,7 +15,7 @@ const ruleSet = {
         type: ['image/png', 'image/jpeg']
     },
     media: {
-      fileSize: 1024 * 1024 * 500,
+      fileSize: 1024 * 1024 * 5000,
       type: ['image/png', 'image/jpeg', 'image/jpg', 'audio/mpeg', 'video/mp4']
   }
 }

@@ -140,10 +140,11 @@ useEffect(() => {
         <React.Fragment>
             <div className="sound-container-body">
                 {soundsData.map((value: any, index: number)=>{
+                    console.log(value)
                     return(
                     <div className="sound-container" key={value.src}>
 
-                        <audio preload="metadata" ref={(object) => playerRefArray.current[index] = object} id="sound" src={value.src} onEnded={() => {replaySVG(index)}}/>
+                        <audio preload="metadata" ref={(object) => playerRefArray.current[index] = object} id="sound" src={`${pikoSelector?.cdn}/${value!.src}`} onEnded={() => {replaySVG(index)}}/>
 
                         <div className="left-control">
                             
@@ -164,6 +165,13 @@ useEffect(() => {
                                     <div ref={(object) => timelineCurrent.current[index] = object} className="timeline-curent" />
                             </div> 
                         </div>
+
+                        <div className="right-control">
+                        <button id="close-button" onClick={()=> removeSound(value.src)}>
+                            <img id="close-img" src="/static/media/xIco.0e0557b57a3eb9c1e096ef72d2ccd1f5.svg"/>
+                            </button>
+                        </div>
+
                     </div>
                     )
                 })}
@@ -212,7 +220,7 @@ useEffect(() => {
                 const data = xhr.response;
 
                 if (data.status) {
-                    addSound(`${pikoSelector?.cdn}/${data.tempToken}`, data.originalName);
+                    addSound(`${data.tempToken}`, data.originalName);
                 }
             }
         };
@@ -234,6 +242,12 @@ const addSound = (newSound: string, originalName: any) => {
         }
         return prevState;
     });
+};
+
+const removeSound = (soundToRemove: string) => {
+    setSoundsData((prevState: any) => (
+        prevState.filter((sound: any) => sound.src !== soundToRemove)
+    ));
 };
 
 function uploadImage(event: React.ChangeEvent<HTMLInputElement>) {
@@ -276,7 +290,7 @@ function uploadImage(event: React.ChangeEvent<HTMLInputElement>) {
                 const data = xhr.response;
 
                 if (data.status) {
-                    addImage(`${pikoSelector?.cdn}/${data.tempToken}`);
+                    addImage(`${data.tempToken}`);
                 }
             }
         };
@@ -356,7 +370,7 @@ const removeImage = (imageToRemove: string) => {
                     const data = xhr.response;
     
                     if (data.status) {
-                        addVideo(`${pikoSelector?.cdn}/${data.tempToken}`);
+                        addVideo(`${data.tempToken}`);
                     }
                 }
             };
@@ -369,7 +383,7 @@ const removeImage = (imageToRemove: string) => {
         return (
             videoData !== "" ? (
               <div className="dokoaplayer-container">
-                <PlayerModule link={videoData} />
+                <PlayerModule link={`${pikoSelector?.cdn}/${videoData}`} />
               </div>
             ) : (
               <React.Fragment />
@@ -463,7 +477,7 @@ const removeImage = (imageToRemove: string) => {
                                     <button id="close-button" onClick={()=> removeImage(value.src)}>
                                         <img id="close-img" src={xIco}/>
                                     </button>
-                                <img style={imageData.length !== 1 ? {...ruleSet1, width: targetWidth[index]} : {...ruleSet1, height: "600px !important"}} className="mediaContent" src={value!.src}/>
+                                <img style={imageData.length !== 1 ? {...ruleSet1, width: targetWidth[index]} : {...ruleSet1, height: "600px !important"}} className="mediaContent" src={`${pikoSelector?.cdn}/${value!.src}`}/>
                             </div>
                             </React.Fragment>
                             )
@@ -479,7 +493,7 @@ const removeImage = (imageToRemove: string) => {
                                 <button id="close-button" onClick={()=> removeImage(value.src)}>
                                         <img id="close-img" src={xIco}/>
                                     </button>
-                                <img style={{...ruleSet1, width: targetWidth[index+3]}}className="mediaContent" src={value!.src}/>
+                                <img style={{...ruleSet1, width: targetWidth[index+3]}}className="mediaContent" src={`${pikoSelector?.cdn}/${value!.src}`}/>
                             </div>
                             </React.Fragment>
                             )

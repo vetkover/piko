@@ -9,7 +9,9 @@ async function deleteFile(name){
         });
     
     const toMain = path.dirname(process.mainModule.filename)
+    console.log(request.path)
     const oldPath = path.resolve(toMain,"root", request.path)
+    
 
     fs.unlink(oldPath, (err) => {
         if (err) {

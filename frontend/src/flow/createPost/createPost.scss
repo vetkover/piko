@@ -196,6 +196,30 @@
                         height: 0;
                     }
 
+                    .right-control{
+                        margin-left: -5px;
+                        height: 100%;
+                        width: 40px;
+                        position: relative;
+                        #close-button{
+                            top: 5px;
+                            left: 0;
+                            position: absolute;
+                            width: 21px;
+                            height: 20px;
+                            background-color: transparent;
+                            background-color: rgba(255, 255, 255, 0.426);
+                            border-radius: 15px;
+            
+                            #close-img{
+                                width: 10px;
+                                height: 10px;
+            
+                                
+                            }
+                    }
+                }
+
                     .middle-control{
                         margin-left: 5px;
                         width: -webkit-fill-available;

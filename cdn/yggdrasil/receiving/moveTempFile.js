@@ -4,7 +4,6 @@ router = express.Router();
 
 router.post("/movetempfile", async (req, res) => {
     if(moveTempFile(req.body.tempToken)){
-        
         res.json(true)
     } else {
     res.json(false)

@@ -209,7 +209,7 @@ function P() {
                           return(
                           <div className="sound-container" key={value.src}>
       
-                              <audio preload="metadata" ref={(object) => playerRefArray.current[index] = object} id="sound" src={value.src} onEnded={() => {replaySVG(index)}}/>
+                              <audio preload="metadata" ref={(object) => playerRefArray.current[index] = object} id="sound" src={`${pikoSelector?.cdn}/${value!.src}`} onEnded={() => {replaySVG(index)}}/>
       
                               <div className="left-control">
                                   
@@ -238,15 +238,20 @@ function P() {
           )
        }
       
-       function VideoContainer(){
+       function VideoContainer() {
+        if (!obj.video) {
+          return <React.Fragment />;
+        }
+      
         return (
-          <React.Fragment>
+          <React.Fragment key={obj.video}>
             <div className="dokoaplayer-container">
-            < PlayerModule link={`${pikoSelector.cdn}/${obj.video}`} />
+              <PlayerModule link={`${pikoSelector.cdn}/${obj.video}`} />
             </div>
           </React.Fragment>
-        )
-       }
+        );
+      }
+      
 
         function ImageContainer(){
           useEffect(() => {
@@ -324,7 +329,7 @@ function P() {
                                   return (
                                       <React.Fragment key={value!.src}>
                                       <div className="media">
-                                      <img style={imageData.length !== 1 ? {...ruleSet1, width: targetWidth[index]} : {...ruleSet1, height: "600px !important"}} className="mediaContent" src={value!.src}/>
+                                      <img style={imageData.length !== 1 ? {...ruleSet1, width: targetWidth[index]} : {...ruleSet1, height: "600px !important"}} className="mediaContent" src={`${pikoSelector?.cdn}/${value!.src}`}/>
                                   </div>
                                   </React.Fragment>
                                   )
@@ -337,7 +342,7 @@ function P() {
                                   return (
                                       <React.Fragment key={value!.src}>
                                       <div className="media">
-                                      <img style={{...ruleSet1, width: targetWidth[index+3]}}className="mediaContent" src={value!.src}/>
+                                      <img style={{...ruleSet1, width: targetWidth[index+3]}}className="mediaContent" src={`${pikoSelector?.cdn}/${value!.src}`}/>
                                   </div>
                                   </React.Fragment>
                                   )
