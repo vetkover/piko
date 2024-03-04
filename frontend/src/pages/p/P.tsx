@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { createRef, useEffect, useRef, useState } from "react";
 import { getText } from "../../components/languageProcessing/localize";
 import { useNavigate, useParams } from "react-router";
 import "./P.scss";
@@ -8,6 +8,8 @@ import PlayerModule from "../../components/dokoa-player/playerModule"
 
 import baner404 from './404baner.png';
 import avatar404 from './404avatar.png';
+import deleteIco from './deleteIco.svg'
+import { whoami } from "../../redux/reducers/whoami";
 
 function ProfileNotExistContainer(){
   const {username} = useParams()
@@ -68,9 +70,7 @@ function P() {
     const {username} = useParams()
     const pikoSelector = useSelector((state: any) => state.pikoset)
   
-    const [userPosts, setUserPosts] = useState<any>()
-    console.log(userPosts)
-  
+    const [userPosts, setUserPosts] = useState<any>()  
     useEffect(() => {
       const fetchData = () => {
   
@@ -90,11 +90,12 @@ function P() {
       play: "M8.5,2.99v43.88c0,0.66,0.74,1.05,1.29,0.68l31.73-21.87c0.47-0.33,0.47-1.03,0-1.35L9.79,2.31 C9.25, 1.93, 8.5, 2.32, 8.5, 2.99z",
   }
     function postsArray() {
+
   
       if(userPosts?.posts){
-        console.log(userPosts)
-  
-      const posts = userPosts?.posts.map((obj: any) => {
+      const filteredPosts = userPosts.posts.filter((post: any) => post.status === 'active');
+      const posts = filteredPosts?.map((obj: any) => {
+        obj.owner = userPosts.owner
 
         function SoundContainer(){
 
@@ -366,9 +367,57 @@ function P() {
             )
           }
 
+          const deletImg = createRef<any>()
+          const question = createRef<any>()
+
+          function removeClick(){
+            deletImg.current.style.display = "none"
+            question.current.style.display = "flex"
+          }
+
+          function removeYes(){
+            fetch(`${pikoSelector.api}/api/post/delete/${obj.id}`, { 
+              method: 'POST',
+              credentials: 'include',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+            })
+              .then((response) => response.json())
+              .then((data) => {
+                console.log(data);
+              })
+              .catch((error) => console.error("error:", error));
+
+
+          }
+          function removeNo(){
+            deletImg.current.style.display = "block"
+            question.current.style.display = "none"
+          }
+
+          function EditPost(){
+            return(
+                    <div className="post-edit-container-options">
+                      <div className="post-edit-delete">
+                          <img ref={deletImg} id="delete-img" src={deleteIco} onClick={removeClick}/>
+                          <div ref={question} className="question">
+                            <a>{getText("p.deleteSure")}</a>
+                            <div id="buttons">
+                              <button id="button-yes"onClick={removeYes}>{getText("yes")}</button>
+                              <button id="button-no" onClick={removeNo}>{getText("no")}</button>
+                            </div>
+                          </div>
+                      </div>
+                    </div>
+            )
+          }
         return (
               <React.Fragment>
                   <div className="body-container">
+                    
+                    {userPosts.owner === whoamiSelector.username? <EditPost /> : <React.Fragment/>}
+
                       <div className="post-view">
                           <div className="left-corner">
                           <img className='userAvatar' src={`${pikoSelector.cdn}/${userData.avatar}`}/>
@@ -382,7 +431,6 @@ function P() {
                                       </div>
                                       <div className="time">
                                           {(() => {
-                                            console.log(userPosts.owner)
                                               const date = new Date(obj.date);
                                               let formattedDate = date.toLocaleDateString('en-US', { day: '2-digit', month: '2-digit', year: 'numeric' });
                                               formattedDate = formattedDate.replace(/\//g, '.');

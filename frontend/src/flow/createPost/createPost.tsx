@@ -593,7 +593,7 @@ function ProgressContainer(){
                         </div>
                         <div className="post-content-container">
                             <div className="post-text">
-                                <div placeholder="placeholder" ref={postText} onInput={postTextChange} contentEditable="true" id="text">
+                                <div placeholder="введите текст" ref={postText} onInput={postTextChange} contentEditable="true" id="text">
                                 </div>
                             </div>
                             <VideoContainer />
@@ -626,7 +626,9 @@ function ProgressContainer(){
                         </div>
 
                         <div className="edit-option">
+                            <div id="create-button">
                             <button onClick={createPost}>create post</button>
+                            </div>
                         </div>
 
                     </div>     

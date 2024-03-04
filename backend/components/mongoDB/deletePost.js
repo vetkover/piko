@@ -5,7 +5,7 @@ async function deletePost(postId){
         {"posts.id": postId},
         {
             $set: {"posts.$.status": "deleted"},
-            $unset: {"posts.$.text": "", "posts.$.images": ""}
+            $unset: {"posts.$.text": "", "posts.$.images": "","posts.$.video": "","posts.$.sounds": ""}
         }
     )
     return mongoresult;

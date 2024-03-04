@@ -211,11 +211,49 @@
     }
     
     .body-container {
-        padding-top: 25px;
+        padding-top: 0 !important;
         display: flex;
         flex-direction: column;
-        padding-bottom: 25px;
+        padding-bottom: 0 !important;
+        position: relative;
        
+          .post-edit-container-options{
+            right: 4px;
+            top: -2px;
+            position: absolute;
+            .post-edit-delete{
+
+              #delete-img{
+                width: 30px;
+                height: 30px;
+              }
+              .question{
+                display: none;
+                flex-direction: column;
+                align-items: center;
+
+                #button-yes{
+                  border: solid 3px rgb(115, 59, 59);
+                  border-radius: 29px;
+                  background-color: transparent;
+                  color: white; 
+                }
+                #button-no{
+                  border-radius: 29px;
+                  background-color: transparent;
+                  color: white;
+                }
+            
+                a{
+                  color: white
+                }
+                #buttons{
+
+                }
+              }
+            }
+          }
+
         }
 
         .post-view{
@@ -349,6 +387,7 @@
 
                   .dokoaplayer-container{
                     position: relative;
+                    margin-top: 25px;
                   }
 
                     .post-text{

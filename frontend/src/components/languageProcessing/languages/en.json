@@ -1,5 +1,7 @@
 {
     "apply": "apply",
+    "yes": "yes",
+    "no": "no",
     
     "home.about_text": "give the Internet your thoughts and actions in any form",
     "home.postChibi": "express your thoughts in a post",
@@ -27,6 +29,7 @@
     "p.postsIsEmpty": "this user hasn't posted anything yet",
     "p.posts": "posts:",
     "p.editProfile": "edit profile",
+    "p.deleteSure": "are you sure you want to delete the post?",
 
     "flow/editProfile.editAvatar": "change avatar",
     "flow/editProfile.editBaner": "change baner",

@@ -135,6 +135,17 @@
                     position: relative;
 
 
+                    #create-button{
+                        border-radius: 29px;
+                        border: solid 3px rgb(115, 59, 59);
+
+                        button{
+                            background-color: transparent;
+                            color: white;
+                            margin: 4px;
+                        }
+                    }
+
                     input[type="file"] {
                         opacity: 0;
                         width: -webkit-fill-available;
@@ -197,7 +208,6 @@
                     }
 
                     .right-control{
-                        margin-left: -5px;
                         height: 100%;
                         width: 40px;
                         position: relative;
