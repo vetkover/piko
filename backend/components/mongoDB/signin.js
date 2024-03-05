@@ -14,6 +14,13 @@ async function signIn(username, nickname, password, email){
             "email": email
             
         })
+
+        await mongo.db('piko').collection('posts').insertOne({
+            "username": username,
+            "posts": []
+            
+        })
+
         return true;
     } catch (error) {
         console.error(error);

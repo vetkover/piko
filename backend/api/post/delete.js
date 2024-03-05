@@ -11,9 +11,10 @@ router.post("/delete/:id", async (req, res) => {
     const DBuserData = await userData(cookie.token);
     if (await checkPostOwner(DBuserData.username, id)){
         deletePost(Number(id))
-        res.json({"message": true})
+        res.json({"status": true})
     } else {
         res.json({
+            "status": false,
             "message": "you are not the owner of the post"
         })
     }

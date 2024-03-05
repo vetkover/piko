@@ -26,7 +26,6 @@ function CreatePost() { //code refactoring urgently needed... sometime in the fu
     
 
 useEffect(() => {
-    console.log(soundsData)
 }, [soundsData]);
 
  function SoundContainer(){

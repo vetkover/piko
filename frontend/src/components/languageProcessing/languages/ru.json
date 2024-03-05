@@ -34,6 +34,8 @@
     "flow/editProfile.editAvatar": "сменить аватар",
     "flow/editProfile.editBaner": "сменить банер",
     "flow/editProfile.previewMode": "режим превью",
-    "flow/editProfile.createBio": "время создать описание профиля?"
+    "flow/editProfile.createBio": "время создать описание профиля?",
+
+    "flow.watchImage.viewImage": "просмотр изображения"
     
 }

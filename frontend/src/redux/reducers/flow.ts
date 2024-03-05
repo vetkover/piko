@@ -1,6 +1,7 @@
 const states = {
     flowURL: "",
     flowTitle: "",
+    flowContent: {}
 
 }
 
@@ -9,12 +10,15 @@ export const flow = (state = states, action: { type: any; payload: any; }) =>{
         case "CREATE_FLOW":
         return {...state, 
             flowURL: action.payload.flowURL,
-            flowTitle: action.payload.flowTitle
+            flowTitle: action.payload.flowTitle,
+            flowContent: action.payload.flowContent
         }
 
         case "CLEAR_FLOW":
             return {...state, 
                 flowURL: "",
+                flowTitle: "",
+                flowContent: {}
             }
 
         default:

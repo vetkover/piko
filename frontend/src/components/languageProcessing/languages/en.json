@@ -34,7 +34,9 @@
     "flow/editProfile.editAvatar": "change avatar",
     "flow/editProfile.editBaner": "change baner",
     "flow/editProfile.previewMode": "preview mode",
-    "flow/editProfile.createBio": "Is it time to create bio?"
+    "flow/editProfile.createBio": "Is it time to create bio?",
+
+    "flow.watchImage.viewImage": "view image"
 
 
     

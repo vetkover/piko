@@ -330,7 +330,13 @@ function P() {
                                   return (
                                       <React.Fragment key={value!.src}>
                                       <div className="media">
-                                      <img style={imageData.length !== 1 ? {...ruleSet1, width: targetWidth[index]} : {...ruleSet1, height: "600px !important"}} className="mediaContent" src={`${pikoSelector?.cdn}/${value!.src}`}/>
+                                      <img style={imageData.length !== 1 ? {...ruleSet1, width: targetWidth[index]} : {...ruleSet1, height: "600px !important"}} className="mediaContent" src={`${pikoSelector?.cdn}/${value!.src}`} onClick={() => {
+                                        const flowURL = "watchImage"; 
+                                        const flowTitle = getText("flow.watchImage.viewImage"); 
+                                        const flowContent = {src: (`${pikoSelector?.cdn}/${value!.src}`)}
+                                        dispatch({type:"CREATE_FLOW", payload: {flowURL,flowTitle, flowContent}})
+                                      }
+                                      }/>
                                   </div>
                                   </React.Fragment>
                                   )
