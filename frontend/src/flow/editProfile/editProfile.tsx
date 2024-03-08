@@ -180,7 +180,7 @@ function EditProfile() {
   
 
   return (
-     <div className="body-container">
+     <div className="flow-body-container">
       
       <a className="text">{getText("flow/editProfile.previewMode")}</a>
 

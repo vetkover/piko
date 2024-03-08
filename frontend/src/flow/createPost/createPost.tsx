@@ -568,7 +568,7 @@ function ProgressContainer(){
 
   return (
         <React.Fragment>
-            <div className="body-container">
+            <div className="flow-body-container" id="flow-body-container">
                 <div className="preview-post-create">
                     <div className="left-corner">
                     <img className='userAvatar' src={`${pikoSelector.cdn}/${whoamiSelector.avatar}`}/>

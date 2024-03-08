@@ -80,11 +80,16 @@
     }
 }
 
-.body-container {
-    padding-top: 25px;
+.flow-body-container {
+    
     display: flex;
     flex-direction: column;
-    padding-bottom: 25px;
+    
+
+    #flow-body-container{
+        padding-bottom: 25px;
+        padding-top: 25px;
+    }
 
                 .edit-options-container{
                     margin-top:5px;
