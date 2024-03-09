@@ -79,12 +79,12 @@ const PlayerModule = ({link}) => {
             playerInterfaces[i].style.opacity = "1";
         }
 
-        if (dokoaPlayer.current.paused == true || !window.isPlayed) {
+        if (dokoaPlayer.current?.paused == true || !window.isPlayed) {
             for (var i = 0; i < playerInterfaces.length; i++) {
                 playerInterfaces[i].style.opacity = "1";
             }
         }
-        if (dokoaPlayer.current.paused == false || window.isPlayed) {
+        if (dokoaPlayer.current?.paused == false || window.isPlayed) {
             let timer = setTimeout(function () {
                 for (var i = 0; i < playerInterfaces.length; i++) {
                     playerInterfaces[i].style.opacity = "0";
@@ -231,7 +231,7 @@ const PlayerModule = ({link}) => {
 
     //controlPanel
 
-    let dokoaPlayer = createRef();
+    let dokoaPlayer = useRef();
     let dokoaParent = createRef();
     let volumeInput = createRef();
 
@@ -250,7 +250,7 @@ const PlayerModule = ({link}) => {
             }
         } else {
             if (
-                (dokoaPlayer.current.currentTime > 0 &&
+                (dokoaPlayer.current?.currentTime > 0 &&
                     !dokoaPlayer.current.paused &&
                     !dokoaPlayer.current.ended &&
                     dokoaPlayer.current.readyState > 2) ||

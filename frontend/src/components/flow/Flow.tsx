@@ -46,41 +46,40 @@ const Flow = () => {
   
 
   const flowBodyContainers = document.getElementsByClassName('flow-body-container')
+  const flowTabContainers = document.getElementsByClassName('flow-tab-container')
+  const flowBottomContainers = document.getElementsByClassName('bottom-tab')
   let activeTab = flowBodyContainers.length;
+
   function setActiveTab(index: number){
     activeTab = index
-    
     dispatch({type:"SET_FLOW_TAB", payload: {activeTab}})
+    tabActivity(index)
+  }
+
+  function removeTab(index: number){
+    dispatch({type:"REMOVE_FLOW", payload: {index}})
+  }
+
+  function tabActivity(index: number){
+    activeTab = index
 
     for(let i = 0; i < flowBodyContainers.length; i++){
       if(i == activeTab){
       (flowBodyContainers[i] as HTMLElement).style.display = "flex";
-    }else {
+      (flowTabContainers[i] as HTMLElement).style.backgroundColor = "#3c3f43";
+      (flowBottomContainers[i] as HTMLElement).style.backgroundColor = "#3c3f43";
+    } else {
       (flowBodyContainers[i] as HTMLElement).style.display = "none";
+      (flowTabContainers[i] as HTMLElement).style.backgroundColor = "transparent";
+      (flowBottomContainers[i] as HTMLElement).style.backgroundColor = "transparent";
     }
   }
-  }
-
-  function removeTab(index: number){
-    
-    dispatch({type:"REMOVE_FLOW", payload: {index}})
-
   }
 
   useEffect(() => {
     activeTab = flowSelector.activeTab
-    for(let i = 0; i < flowBodyContainers.length; i++){
-      if(i == activeTab){
-      (flowBodyContainers[i] as HTMLElement).style.display = "flex";
-    }else {
-      (flowBodyContainers[i] as HTMLElement).style.display = "none";
-    }
-
-
-  }
+    tabActivity(activeTab)
   }, [flowSelector]);
-
-  
 
   function getActualFlow(){
     if(flowSelector.flowURL != ""){
@@ -100,6 +99,7 @@ const Flow = () => {
                       <a className='flow-title'>{value}</a>
                       <button id='active-tab' onClick={()=> setActiveTab(index)}></button>
                       <img src={xIco} id='remove-tab' onClick={()=> removeTab(index)} />
+                      <div className='bottom-tab' />
                     </div>
                   )
                 })}
@@ -124,8 +124,6 @@ const Flow = () => {
                 })
                 )
               })}
-              {}
-
             </div>
           </div>
         </div>

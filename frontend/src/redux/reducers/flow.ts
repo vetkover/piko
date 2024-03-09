@@ -34,8 +34,7 @@ export const flow = (state = states, action: { type: any; payload: any; }) =>{
 
         case "REMOVE_FLOW":
             const index = action.payload.index;
-            console.log(action)
-
+            
             return {
                 ...state,
                 flowURL: state.flowURL.filter((empty, i) => i !== index),
