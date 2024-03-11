@@ -40,7 +40,7 @@ export const flow = (state = states, action: { type: any; payload: any; }) =>{
                 flowURL: state.flowURL.filter((empty, i) => i !== index),
                 flowTitle: state.flowTitle.filter((empty, i) => i !== index),
                 flowContent: state.flowContent.filter((empty, i) => i !== index),
-                activeTab: index === state.activeTab ? (state.activeTab - 1 < 0) ? 0 : state.activeTab : state.activeTab
+                activeTab: index === state.activeTab ? (state.activeTab - 1 < 0) ? 0 : state.activeTab - 1 : state.activeTab
             };
             
 
