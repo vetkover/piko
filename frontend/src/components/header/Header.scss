@@ -10,6 +10,21 @@
     width: 265px;
     flex-direction: column;
 
+    #button3{
+      .icon{
+        height: 40px;
+        width: 40px;
+        padding: 10px;
+      }
+    }
+
+    #button2{
+      .icon{
+        height: 60px;
+        width: 60px;
+      }
+    }
+
     .piko-option-container{
       margin-top: 8px;
       display: grid;

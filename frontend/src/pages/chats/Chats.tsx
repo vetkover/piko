@@ -1,0 +1,118 @@
+import React, { createRef, useEffect, useRef, useState } from "react";
+import { getText } from "../../components/languageProcessing/localize";
+import { useNavigate, useParams } from "react-router";
+import "./Chats.scss";
+import { useDispatch, useSelector } from "react-redux";
+
+import PlayerModule from "../../components/dokoa-player/playerModule";
+
+import baner404 from "./404baner.png";
+import avatar404 from "./404avatar.png";
+import deleteIco from "./deleteIco.svg";
+import { whoami } from "../../redux/reducers/whoami";
+
+function Chats() {
+  const pikoSelector = useSelector((state: any) => state.pikoset);
+  const whoamiSelector = useSelector((state: any) => state.whoami);
+
+  const [activeChat, setActiveChat] = useState<any>();
+  const navigate = useNavigate();
+  const exampleChatList = [
+    {
+      chatName: "chat name example",
+      chatIco: avatar404,
+      chatLastMessage: "фтж ыщ эзвш ошг2 пцжоa sd qwe2  asd qwe q we",
+      chatId: 2,
+    },
+  ];
+
+  const exampleMessageList = [
+    {
+      author: "nara",
+      createTime: 100000,
+      text: "привет сообщение для примера, это сообщение автора!",
+      messageId: 5,
+      images: [],
+      videos: [],
+      sounds: [],
+    },
+    {
+      author: "nesm",
+      createTime: 100000,
+      text: "привет сообщение для примера, это сообщение не автора хы!",
+      messageId: 6,
+      images: [],
+      videos: [],
+      sounds: [],
+    },
+  ];
+
+  return (
+    <div className="chats-container">
+      <div className="left-container">
+        <div className="list-panel" />
+
+        <div className="chats-list-container">
+          {exampleChatList.map((object, index) => (
+            <div className="chat-option-body">
+              <button
+                className="chat-changer"
+                onClick={() => {
+                  alert("click");
+                }}
+              />
+
+              <div id="left-container">
+                <img className="chats-ico" src={object.chatIco} />
+              </div>
+              <div id="right-container">
+                <div className="chat-info">
+                  <div className="chat-name">{object.chatName}</div>
+                  <div className="last-message-time"></div>
+                </div>
+                <div className="chat-last-message">
+                  {object.chatLastMessage}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="middle-container">
+        <div className="list-panel" />
+
+        <div className="message-container">
+          {exampleMessageList.map((object, index) => (
+            <div className="message-body" key={object.messageId}>
+              <img
+                id="avatar"
+                src={avatar404}
+                onClick={() => {
+                  navigate(`/p/${object.author}`);
+                }}
+              />
+
+              <div id="content">
+                <div className="info">
+                  <div className="author">{object.author}</div>
+                  <div className="time"> {object.createTime} </div>
+                </div>
+                <div className="message-data">
+
+                  {(() => {
+                    if (object.text)
+                      return <div className="message-text"> {object.text}</div>;
+                  })()}
+
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default Chats;
