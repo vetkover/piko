@@ -425,7 +425,7 @@ function P() {
             )
           }
         return (
-              <React.Fragment>
+              <React.Fragment key={obj.id}>
                   <div className="body-container">
                     
                     {userPosts.owner === whoamiSelector.username? <EditPost /> : <React.Fragment/>}

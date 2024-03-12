@@ -6,9 +6,8 @@ import { useDispatch, useSelector } from "react-redux";
 
 import PlayerModule from "../../components/dokoa-player/playerModule";
 
-import baner404 from "./404baner.png";
 import avatar404 from "./404avatar.png";
-import deleteIco from "./deleteIco.svg";
+import sendIco from "./sendIco.svg";
 import { whoami } from "../../redux/reducers/whoami";
 
 function Chats() {
@@ -24,12 +23,18 @@ function Chats() {
       chatLastMessage: "фтж ыщ эзвш ошг2 пцжоa sd qwe2  asd qwe q we",
       chatId: 2,
     },
+    {
+      chatName: "chat name example2",
+      chatIco: avatar404,
+      chatLastMessage: "фтж ыщ эзвш ошг2 пцжоa sd qwe2  asd qwe q we",
+      chatId: 3,
+    },
   ];
 
   const exampleMessageList = [
     {
       author: "nara",
-      createTime: 100000,
+      createTime: 1710268365,
       text: "привет сообщение для примера, это сообщение автора!",
       messageId: 5,
       images: [],
@@ -38,7 +43,7 @@ function Chats() {
     },
     {
       author: "nesm",
-      createTime: 100000,
+      createTime: 1710269365,
       text: "привет сообщение для примера, это сообщение не автора хы!",
       messageId: 6,
       images: [],
@@ -46,6 +51,16 @@ function Chats() {
       sounds: [],
     },
   ];
+
+  function convertUnixTime(unixTime: number) {
+    const date = new Date(unixTime * 1000);
+    const formattedDate = `${date.getMonth() + 1}.${date.getDate()}.${date.getFullYear()}`;
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    const formattedTime = `${((hours + 11) % 12 + 1)}:${minutes < 10 ? '0' + minutes : minutes} ${ampm}`;
+    return { formattedDate, formattedTime };
+  }
 
   return (
     <div className="chats-container">
@@ -96,7 +111,7 @@ function Chats() {
               <div id="content">
                 <div className="info">
                   <div className="author">{object.author}</div>
-                  <div className="time"> {object.createTime} </div>
+                  <div className="time"> {convertUnixTime(object.createTime).formattedDate} {convertUnixTime(object.createTime).formattedTime} </div>
                 </div>
                 <div className="message-data">
 
@@ -108,8 +123,20 @@ function Chats() {
                 </div>
               </div>
             </div>
+
           ))}
         </div>
+
+        <div className="message-input-container">
+          <div className="message-top-container">
+            <div id="input" placeholder="input message" contentEditable></div>
+            <div className="send-message-button">
+              <img src={sendIco} onClick={()=>alert("click")}/>
+            </div>
+
+          </div>
+        </div>
+
       </div>
     </div>
   );
