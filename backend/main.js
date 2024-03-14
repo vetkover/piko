@@ -1,4 +1,6 @@
 const express = require('express')
+
+const ws = require('./components/websocket/ws.js')
 // const midleware = require('./midleware')
 const PORT = process.env.PORT || 3001
 const app = express();

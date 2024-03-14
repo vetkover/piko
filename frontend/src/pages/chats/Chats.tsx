@@ -10,12 +10,33 @@ import avatar404 from "./404avatar.png";
 import sendIco from "./sendIco.svg";
 import { whoami } from "../../redux/reducers/whoami";
 
+const socket = new WebSocket('ws://localhost:8080/chats/1');
+
+socket.addEventListener('open', function (event) {
+  console.log('Соединение установлено');
+});
+
+
+function sendMessage(message: string) {
+if (socket.readyState === WebSocket.OPEN) {
+    socket.send(message);
+} else {
+    console.log('Соединение не установлено');
+    
+}
+}
+
+
+
 function Chats() {
   const pikoSelector = useSelector((state: any) => state.pikoset);
   const whoamiSelector = useSelector((state: any) => state.whoami);
 
   const [activeChat, setActiveChat] = useState<any>();
   const navigate = useNavigate();
+
+
+
   const exampleChatList = [
     {
       chatName: "chat name example",
@@ -31,7 +52,7 @@ function Chats() {
     },
   ];
 
-  const exampleMessageList = [
+  const [exampleMessageList,setExampleMessageList] = useState<any>([
     {
       author: "nara",
       createTime: 1710268365,
@@ -50,7 +71,18 @@ function Chats() {
       videos: [],
       sounds: [],
     },
-  ];
+  ])
+  useEffect(() => {
+    socket.addEventListener('message', function (event) {
+      console.log('Сообщение от сервера: ', event.data);
+      setExampleMessageList([...exampleMessageList,JSON.parse(event.data)])
+      console.log(exampleMessageList)
+    });
+  }, [exampleMessageList])
+
+
+
+  const messageText = useRef<any>()
 
   function convertUnixTime(unixTime: number) {
     const date = new Date(unixTime * 1000);
@@ -98,7 +130,7 @@ function Chats() {
         <div className="list-panel" />
 
         <div className="message-container">
-          {exampleMessageList.map((object, index) => (
+          {exampleMessageList.map((object: any) => (
             <div className="message-body" key={object.messageId}>
               <img
                 id="avatar"
@@ -129,9 +161,9 @@ function Chats() {
 
         <div className="message-input-container">
           <div className="message-top-container">
-            <div id="input" placeholder="input message" contentEditable></div>
+            <div id="input" placeholder="input message" ref={messageText} contentEditable></div>
             <div className="send-message-button">
-              <img src={sendIco} onClick={()=>alert("click")}/>
+              <img src={sendIco} onClick={()=>sendMessage(messageText.current!.innerText)}/>
             </div>
 
           </div>
