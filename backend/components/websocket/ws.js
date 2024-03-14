@@ -3,7 +3,7 @@ const wss = new WebSocket.Server({ port: 8080 });
 const parseCookies = require('../stuff/cookieReader')
 const whoami = require('../stuff/whoami');
 
-const clients = [];
+const wsClients = [];
 
 wss.on('connection', async function connection(ws, req) {
   const clientId = generateUniqueId();
@@ -15,11 +15,11 @@ wss.on('connection', async function connection(ws, req) {
   userObj.ws = ws;
   userObj.url = req.url;
   userObj.user = userData.username;
-  clients[clientId] = userObj
+  wsClients[clientId] = userObj
 
   ws.on('message', function incoming(message) {
     console.log(`Клиент ${clientId} отправил сообщение: ${message}`);
-    //console.log(clients)
+    //console.log(wsClients)
     
     let obj = {
         author: "nara",
@@ -35,12 +35,12 @@ wss.on('connection', async function connection(ws, req) {
   });
 
   ws.on('close', function close() {
-    delete clients[clientId];
+    delete wsClients[clientId];
   });
 });
 
 function sendMessageToClient(clientId, message) {
-    const client = clients[clientId].ws;
+    const client = wsClients[clientId].ws;
     if (client && client.readyState === WebSocket.OPEN) {
       const messageString = JSON.stringify(message);
       client.send(messageString);
@@ -51,7 +51,7 @@ function sendMessageToClient(clientId, message) {
   
 
 function chatUpdate(chatID, updateObj){
-    usersInChat = Object.values(clients).filter((value) => {
+    usersInChat = Object.values(wsClients).filter((value) => {
         return value.url === chatID;
     });
     usersInChat.map((value, index)=>{
@@ -59,8 +59,6 @@ function chatUpdate(chatID, updateObj){
     })
     console.log(usersInChat);
 }
-
-
 
 
 function generateUniqueId() {
