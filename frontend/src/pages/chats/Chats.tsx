@@ -17,26 +17,40 @@ socket.addEventListener('open', function (event) {
 });
 
 
-function sendMessage(message: string) {
-if (socket.readyState === WebSocket.OPEN) {
-    socket.send(message);
-} else {
-    console.log('Соединение не установлено');
-    
-}
-}
-
-
-
 function Chats() {
   const pikoSelector = useSelector((state: any) => state.pikoset);
   const whoamiSelector = useSelector((state: any) => state.whoami);
 
-  const [activeChat, setActiveChat] = useState<any>();
+  const [activeChat, setActiveChat] = useState<any>(1);
   const navigate = useNavigate();
 
 
 
+  function sendMessage(message: string) {
+    if (socket.readyState === WebSocket.OPEN) {
+      fetch(`${pikoSelector.api}/api/chats/send/${activeChat}`, {
+        method: 'POST', 
+        mode: 'cors', 
+        credentials: 'include', 
+        headers: {
+          'Content-Type': 'application/json' 
+        },
+        body: JSON.stringify({
+          text: message 
+        })
+      })
+      .then(response => response.json())
+      .then(data => {console.log(data)
+      })
+      
+      .catch(error => console.error('Error:', error));
+      
+        
+    } else {
+        console.log('Соединение не установлено');
+    }
+    }
+    
   const exampleChatList = [
     {
       chatName: "chat name example",
@@ -52,40 +66,42 @@ function Chats() {
     },
   ];
 
-  const [exampleMessageList,setExampleMessageList] = useState<any>([
-    {
-      author: "nara",
-      createTime: 1710268365,
-      text: "привет сообщение для примера, это сообщение автора!",
-      messageId: 5,
-      images: [],
-      videos: [],
-      sounds: [],
-    },
-    {
-      author: "nesm",
-      createTime: 1710269365,
-      text: "привет сообщение для примера, это сообщение не автора хы!",
-      messageId: 6,
-      images: [],
-      videos: [],
-      sounds: [],
-    },
-  ])
+  const [exampleMessageList,setExampleMessageList] = useState<any>([])
+  console.log(exampleMessageList)
   useEffect(() => {
-    socket.addEventListener('message', function (event) {
-      console.log('Сообщение от сервера: ', event.data);
-      setExampleMessageList([...exampleMessageList,JSON.parse(event.data)])
-      console.log(exampleMessageList)
-    });
-  }, [exampleMessageList])
+
+    fetch(`${pikoSelector.api}/api/chats/read/${activeChat}`, {
+      method: 'GET', 
+      mode: 'cors', 
+      credentials: 'include', 
+      headers: {
+        'Content-Type': 'application/json' 
+      }
+    })
+    .then(response => response.json())
+    .then(data => {console.log(data)
+      setExampleMessageList(data);
+    })
+    
+    .catch(error => console.error('Error:', error));
 
 
+
+      const messageListener = (event: { data: string; }) => {
+        console.log('Сообщение от сервера: ', event.data);
+        setExampleMessageList((exampleMessageList: any) => [...exampleMessageList, JSON.parse(event.data)]);
+      };
+       socket.addEventListener('message', messageListener);
+       return () => {
+        socket.removeEventListener('message', messageListener);
+      };
+
+  }, []);
 
   const messageText = useRef<any>()
 
   function convertUnixTime(unixTime: number) {
-    const date = new Date(unixTime * 1000);
+    const date = new Date(unixTime);
     const formattedDate = `${date.getMonth() + 1}.${date.getDate()}.${date.getFullYear()}`;
     const hours = date.getHours();
     const minutes = date.getMinutes();

@@ -14,24 +14,14 @@ wss.on('connection', async function connection(ws, req) {
 
   userObj.ws = ws;
   userObj.url = req.url;
-  userObj.user = userData.username;
+  userObj.user = userData?.username;
   wsClients[clientId] = userObj
 
   ws.on('message', function incoming(message) {
     console.log(`Клиент ${clientId} отправил сообщение: ${message}`);
     //console.log(wsClients)
     
-    let obj = {
-        author: "nara",
-        createTime: 1710269365,
-        text: message.toString('utf-8'),
-        messageId: Math.random(),
-        images: [],
-        videos: [],
-        sounds: [],
-      }
 
-    chatUpdate("/chats/1", obj)
   });
 
   ws.on('close', function close() {
@@ -57,7 +47,7 @@ function chatUpdate(chatID, updateObj){
     usersInChat.map((value, index)=>{
         value.ws.send(JSON.stringify(updateObj))
     })
-    console.log(usersInChat);
+    console.log(updateObj);
 }
 
 
@@ -66,3 +56,5 @@ function generateUniqueId() {
 }
 
 console.log('WebSocket сервер');
+
+module.exports = chatUpdate;

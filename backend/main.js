@@ -20,6 +20,10 @@ const pikoSet = require('./api/stuff/pikoset')
 const p = require('./api/user/p.js')
 const profile = require('./api/user/profile.js')
 
+const list = require('./api/chats/list.js')
+const send = require('./api/chats/send.js')
+const read = require('./api/chats/read.js')
+
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "http://localhost:3000");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
@@ -31,16 +35,23 @@ app.use(express.json());
 
 app.use('/api/user', profile)
 app.use('/api/user', whoami)
+
 app.use('/api/auth', signin)
 app.use('/api/auth', isMailUnique)
 app.use('/api/auth', isUsernameUnique)
 app.use('/api/auth', isNicknameUnique)
 app.use('/api/auth', login)
+
 app.use('/api/', pikoSet)
 app.use('/api', p)
+
 app.use('/api/post/', posts)
 app.use('/api/post/', create)
 app.use('/api/post/', deletePost)
+
+app.use('/api/chats/', list)
+app.use('/api/chats/', send)
+app.use('/api/chats/', read)
 
 
 // yggdrasil - data exchange between piko servers
