@@ -5,7 +5,8 @@ const ws = require('./components/websocket/ws.js')
 const PORT = process.env.PORT || 3001
 const app = express();
 
-const whoami = require('./api/user/whoami.js')
+
+
 const signin = require('./api/auth/signin.js')
 const login = require('./api/auth/login.js')
 const isMailUnique = require('./api/auth/isMailUnique.js')
@@ -17,7 +18,10 @@ const create = require('./api/post/create.js')
 const deletePost = require('./api/post/delete.js')
 
 const pikoSet = require('./api/stuff/pikoset')
+
+const whoami = require('./api/user/whoami.js')
 const p = require('./api/user/p.js')
+const userAvatar = require('./api/user/userAvatar.js')
 const profile = require('./api/user/profile.js')
 
 const list = require('./api/chats/list.js')
@@ -35,6 +39,7 @@ app.use(express.json());
 
 app.use('/api/user', profile)
 app.use('/api/user', whoami)
+app.use('/api/user', userAvatar)
 
 app.use('/api/auth', signin)
 app.use('/api/auth', isMailUnique)

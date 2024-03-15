@@ -1,14 +1,13 @@
-import React, { createRef, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { getText } from "../../components/languageProcessing/localize";
 import { useNavigate, useParams } from "react-router";
 import "./Chats.scss";
 import { useDispatch, useSelector } from "react-redux";
 
-import PlayerModule from "../../components/dokoa-player/playerModule";
+//import PlayerModule from "../../components/dokoa-player/playerModule";
 
 import avatar404 from "./404avatar.png";
 import sendIco from "./sendIco.svg";
-import { whoami } from "../../redux/reducers/whoami";
 
 const socket = new WebSocket('ws://localhost:8080/chats/1');
 
@@ -16,15 +15,12 @@ socket.addEventListener('open', function (event) {
   console.log('Соединение установлено');
 });
 
-
 function Chats() {
   const pikoSelector = useSelector((state: any) => state.pikoset);
   const whoamiSelector = useSelector((state: any) => state.whoami);
 
-  const [activeChat, setActiveChat] = useState<any>(1);
+  const [activeChat, setActiveChat] = useState<any>();
   const navigate = useNavigate();
-
-
 
   function sendMessage(message: string) {
     if (socket.readyState === WebSocket.OPEN) {
@@ -40,35 +36,36 @@ function Chats() {
         })
       })
       .then(response => response.json())
-      .then(data => {console.log(data)
+      .then(data => {
       })
       
       .catch(error => console.error('Error:', error));
       
-        
     } else {
         console.log('Соединение не установлено');
     }
-    }
+  }
     
-  const exampleChatList = [
-    {
-      chatName: "chat name example",
-      chatIco: avatar404,
-      chatLastMessage: "фтж ыщ эзвш ошг2 пцжоa sd qwe2  asd qwe q we",
-      chatId: 2,
-    },
-    {
-      chatName: "chat name example2",
-      chatIco: avatar404,
-      chatLastMessage: "фтж ыщ эзвш ошг2 пцжоa sd qwe2  asd qwe q we",
-      chatId: 3,
-    },
-  ];
+
+  const [exampleChatList, setExampleChatList] = useState<any>()
 
   const [exampleMessageList,setExampleMessageList] = useState<any>([])
-  console.log(exampleMessageList)
   useEffect(() => {
+
+    fetch(`${pikoSelector.api}/api/chats/list`, {
+      method: 'GET', 
+      mode: 'cors', 
+      credentials: 'include', 
+      headers: {
+        'Content-Type': 'application/json' 
+      }
+    })
+    .then(response => response.json())
+    .then(data => {
+      setExampleChatList(data);
+    })
+    
+    .catch(error => console.error('Error:', error));
 
     fetch(`${pikoSelector.api}/api/chats/read/${activeChat}`, {
       method: 'GET', 
@@ -79,16 +76,13 @@ function Chats() {
       }
     })
     .then(response => response.json())
-    .then(data => {console.log(data)
+    .then(data => {
       setExampleMessageList(data);
     })
     
     .catch(error => console.error('Error:', error));
 
-
-
       const messageListener = (event: { data: string; }) => {
-        console.log('Сообщение от сервера: ', event.data);
         setExampleMessageList((exampleMessageList: any) => [...exampleMessageList, JSON.parse(event.data)]);
       };
        socket.addEventListener('message', messageListener);
@@ -96,7 +90,7 @@ function Chats() {
         socket.removeEventListener('message', messageListener);
       };
 
-  }, []);
+  }, [activeChat]);
 
   const messageText = useRef<any>()
 
@@ -110,27 +104,53 @@ function Chats() {
     return { formattedDate, formattedTime };
   }
 
+  const [targetUserAvatar,setTargetUserAvatar] = useState<any>([])
+
+function fetchUserAvatar(targetUser: string) {
+  fetch(`${pikoSelector.api}/api/user/useravatar/${targetUser}`, {
+    method: 'GET',
+    mode: 'cors',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+  .then(response => response.json())
+  .then(data => {
+    setTargetUserAvatar(`${pikoSelector?.cdn}/${data}`)
+    return `${pikoSelector?.cdn}/${data}`;
+  });
+}
+
   return (
     <div className="chats-container">
       <div className="left-container">
         <div className="list-panel" />
 
         <div className="chats-list-container">
-          {exampleChatList.map((object, index) => (
-            <div className="chat-option-body">
+          {exampleChatList?.map( (object: any, index: number) => {
+
+            let targetUser: any;
+            if(object.type === "direct"){
+              
+              targetUser = object.accessUsers.filter((obj: any)=> obj !== whoamiSelector.username)[0];
+            }
+
+            return (
+            <div className="chat-option-body" key={object.chatId}>
               <button
                 className="chat-changer"
                 onClick={() => {
-                  alert("click");
+                  setActiveChat(object.chatId);
                 }}
               />
 
               <div id="left-container">
-                <img className="chats-ico" src={object.chatIco} />
+                <img className="chats-ico" src={`${pikoSelector.cdn}/${"defaultAvatar"}`} />
               </div>
               <div id="right-container">
                 <div className="chat-info">
-                  <div className="chat-name">{object.chatName}</div>
+                  <div className="chat-name">{targetUser}</div>
                   <div className="last-message-time"></div>
                 </div>
                 <div className="chat-last-message">
@@ -138,7 +158,8 @@ function Chats() {
                 </div>
               </div>
             </div>
-          ))}
+)})}
+
         </div>
       </div>
 
