@@ -8,12 +8,8 @@ import { useDispatch, useSelector } from "react-redux";
 
 import avatar404 from "./404avatar.png";
 import sendIco from "./sendIco.svg";
+import socialEmpty from "./socialEmpty.png"
 
-const socket = new WebSocket('ws://localhost:8080/chats/1');
-
-socket.addEventListener('open', function (event) {
-  console.log('Соединение установлено');
-});
 
 function Chats() {
   const pikoSelector = useSelector((state: any) => state.pikoset);
@@ -21,6 +17,12 @@ function Chats() {
 
   const [activeChat, setActiveChat] = useState<any>();
   const navigate = useNavigate();
+
+  const socket = new WebSocket(`ws://localhost:8080/chats/${activeChat}`);
+
+  socket.addEventListener('open', function (event) {
+    console.log('Соединение установлено');
+  });
 
   function sendMessage(message: string) {
     if (socket.readyState === WebSocket.OPEN) {
@@ -83,7 +85,9 @@ function Chats() {
     .catch(error => console.error('Error:', error));
 
       const messageListener = (event: { data: string; }) => {
+        if(activeChat !== undefined){
         setExampleMessageList((exampleMessageList: any) => [...exampleMessageList, JSON.parse(event.data)]);
+        }
       };
        socket.addEventListener('message', messageListener);
        return () => {
@@ -122,12 +126,24 @@ function fetchUserAvatar(targetUser: string) {
   });
 }
 
+  function MessagesIsEmpty(){
+    return(
+      <div className="empty-messages-container">
+        <img src={socialEmpty} />
+        <a>кажется здесь ничего нет</a>
+      </div>
+    )
+  }
+
   return (
     <div className="chats-container">
       <div className="left-container">
         <div className="list-panel" />
 
         <div className="chats-list-container">
+
+            {exampleChatList?.length === 0 ? <MessagesIsEmpty /> : <React.Fragment /> }
+
           {exampleChatList?.map( (object: any, index: number) => {
 
             let targetUser: any;

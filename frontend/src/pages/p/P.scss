@@ -122,11 +122,15 @@
     .posts-content {
       width: 100%;
       height: auto;
-      display: flex;
       position: relative;
       background-color: #26282b;
       display: flex;
+      align-items: center;
       flex-direction: column;
+
+      .post-is-empty{
+        color: white;
+      }
 
       .media-container-body{
         width: fit-content;

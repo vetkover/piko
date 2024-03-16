@@ -19,9 +19,6 @@ wss.on('connection', async function connection(ws, req) {
 
   ws.on('message', function incoming(message) {
     console.log(`Клиент ${clientId} отправил сообщение: ${message}`);
-    //console.log(wsClients)
-    
-
   });
 
   ws.on('close', function close() {
@@ -52,7 +49,7 @@ function chatUpdate(chatID, updateObj){
 
 
 function generateUniqueId() {
-  return Math.random().toString(36).substr(2, 9);
+  return Math.random().toString(36).substr(2, 15);
 }
 
 console.log('WebSocket сервер');

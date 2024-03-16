@@ -15,7 +15,6 @@ router.get("/list", async (req, res) => {
 
             for(let i = 0; i < DBuserData.chats; i++){
                 let chatDB = await chatInfo(DBuserData.chats[i])
-                console.log(chatDB.messages[chatDB.messages.length-1])
                 let pushObj = {
                     chatId: chatDB.chatId,
                     chatName: "example",
