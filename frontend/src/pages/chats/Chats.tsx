@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { getText } from "../../components/languageProcessing/localize";
 import { useNavigate, useParams } from "react-router";
 import "./Chats.scss";
@@ -17,7 +17,7 @@ function Chats() {
 
   const [activeChat, setActiveChat] = useState<any>();
   const navigate = useNavigate();
-
+  const messageContainer = useRef<any>()
   const socket = new WebSocket(`ws://localhost:8080/chats/${activeChat}`);
 
   socket.addEventListener('open', function (event) {
@@ -52,6 +52,12 @@ function Chats() {
   const [exampleChatList, setExampleChatList] = useState<any>()
 
   const [exampleMessageList,setExampleMessageList] = useState<any>([])
+  const [chatData, setChatData] = useState<any>()
+
+  useLayoutEffect(() => {
+    messageContainer.current.scrollTop = messageContainer.current.scrollHeight;
+  }, [exampleMessageList, activeChat]);
+
   useEffect(() => {
 
     fetch(`${pikoSelector.api}/api/chats/list`, {
@@ -65,9 +71,7 @@ function Chats() {
     .then(response => response.json())
     .then(data => {
       setExampleChatList(data);
-    })
-    
-    .catch(error => console.error('Error:', error));
+    }).catch(error => console.error('Error:', error));
 
     fetch(`${pikoSelector.api}/api/chats/read/${activeChat}`, {
       method: 'GET', 
@@ -80,9 +84,22 @@ function Chats() {
     .then(response => response.json())
     .then(data => {
       setExampleMessageList(data);
-    })
-    
-    .catch(error => console.error('Error:', error));
+    }).catch(error => console.error('Error:', error));
+
+    if(activeChat !== undefined){
+      fetch(`${pikoSelector.api}/api/chats/info/${activeChat}`, {
+        method: 'GET', 
+        mode: 'cors', 
+        credentials: 'include', 
+        headers: {
+          'Content-Type': 'application/json' 
+        }
+      })
+      .then(response => response.json())
+      .then(data => {
+        setChatData(data);
+      }).catch(error => console.error('Error:', error));
+    }
 
       const messageListener = (event: { data: string; }) => {
         if(activeChat !== undefined){
@@ -108,24 +125,6 @@ function Chats() {
     return { formattedDate, formattedTime };
   }
 
-  const [targetUserAvatar,setTargetUserAvatar] = useState<any>([])
-
-function fetchUserAvatar(targetUser: string) {
-  fetch(`${pikoSelector.api}/api/user/useravatar/${targetUser}`, {
-    method: 'GET',
-    mode: 'cors',
-    credentials: 'include',
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  })
-  .then(response => response.json())
-  .then(data => {
-    setTargetUserAvatar(`${pikoSelector?.cdn}/${data}`)
-    return `${pikoSelector?.cdn}/${data}`;
-  });
-}
-
   function MessagesIsEmpty(){
     return(
       <div className="empty-messages-container">
@@ -147,6 +146,7 @@ function fetchUserAvatar(targetUser: string) {
           {exampleChatList?.map( (object: any, index: number) => {
 
             let targetUser: any;
+            
             if(object.type === "direct"){
               
               targetUser = object.accessUsers.filter((obj: any)=> obj !== whoamiSelector.username)[0];
@@ -182,12 +182,14 @@ function fetchUserAvatar(targetUser: string) {
       <div className="middle-container">
         <div className="list-panel" />
 
-        <div className="message-container">
-          {exampleMessageList.map((object: any) => (
+        <div ref={messageContainer} className="message-container">
+          {exampleMessageList.map((object: any) => {
+
+            return(
             <div className="message-body" key={object.messageId}>
               <img
                 id="avatar"
-                src={avatar404}
+                src={`${pikoSelector.cdn}/${chatData?.aboutUsers[object.author].src}`}
                 onClick={() => {
                   navigate(`/p/${object.author}`);
                 }}
@@ -209,7 +211,7 @@ function fetchUserAvatar(targetUser: string) {
               </div>
             </div>
 
-          ))}
+          )})}
         </div>
 
         <div className="message-input-container">

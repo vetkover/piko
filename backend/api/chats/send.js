@@ -4,7 +4,7 @@ router = express.Router();
 
 const userData = require('../../components/mongoDB/userData.js')
 const sendMessage = require('../../components/mongoDB/sendMessage.js')
-
+const chatMember = require('../../components/mongoDB/chatMember.js')
 const chatUpdate = require('../../components/websocket/ws.js')
 
 router.post("/send/:chatId", async (req, res) => {
@@ -27,9 +27,11 @@ router.post("/send/:chatId", async (req, res) => {
           }
 
         if(DBuserData){
+            if(await chatMember(chatId,DBuserData.username)){
             sendMessage(chatId, body.text, DBuserData.username)
             chatUpdate(`/chats/${chatId}`, obj)
             res.json(true);
+            }
         } else {
             res.json({ message: "notAuth" });
         }
