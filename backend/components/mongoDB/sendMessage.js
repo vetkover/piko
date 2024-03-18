@@ -1,27 +1,33 @@
-const mongo = require('./mongo.js')
+const mongo = require('./mongo.js');
 
 async function sendMessage(chatId, text, author) {
-    console.log(chatId)
+
     try {
+        const chat = await mongo.db('piko').collection('chats').findOne({ "chatId": Number(chatId) });
+        const currentMessageCount = chat.messages ? chat.messages.length : 0;
+
+        let messageObj = {
+          createTime: Date.now(),
+          text: text,
+          author: author,
+          messageId: currentMessageCount + 1,
+          status: "active"
+        }
+
+
         let mongoresult = await mongo.db('piko').collection('chats').updateOne(
-          { "chatId": Number(chatId) },
-          {
-            $push: {
-              messages: {
-                createTime: Date.now(),
-                text: text,
-                author: author
-              }
-            }   
-          }
+            { "chatId": Number(chatId) },
+            {
+                $push: {
+                    messages: messageObj
+                }   
+            }
         );
-        console.log(mongoresult);
-        return mongoresult;
-      } catch (error) {
+
+        return messageObj;
+    } catch (error) {
         console.error('Ошибка при отправке сообщения:', error);
-      }
-      
-  }
-  
+    }
+}
 
 module.exports = sendMessage;

@@ -14,9 +14,10 @@ router.get("/read/:chatId", async (req, res) => {
         if(await chatMember(chatId,DBuserData.username)){
 
             let messageArr = await readChat(chatId)
+            let sendMessage = messageArr.filter(object=> object.status === "active")
             if(DBuserData){
     
-                res.json(messageArr);
+                res.json(sendMessage);
             } else {
                 res.json({ message: "notAuth" });
             }

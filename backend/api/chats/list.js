@@ -18,7 +18,7 @@ router.get("/list", async (req, res) => {
                 let pushObj = {
                     chatId: chatDB.chatId,
                     chatName: "example",
-                    chatLastMessage: chatDB.messages[chatDB.messages.length-1].text,
+                    chatLastMessage: chatDB.messages[chatDB.messages.length-1]?.text ? chatDB.messages[chatDB.messages.length-1].text : "",
                     accessUsers: chatDB.accessUsers,
                     type: chatDB.type
                 }

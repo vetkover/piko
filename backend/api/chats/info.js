@@ -15,16 +15,11 @@ router.get("/info/:chatId", async (req, res) => {
         if(await chatMember(chatId,DBuserData.username)){
 
             let chatData = await chatInfo(chatId)
-            //console.log(chatData)
-
             let users = {}
 
             for(let i = 0; i< chatData.accessUsers.length; i++){
-                
                 const userAvatarToken = {src: await userAvatar(chatData.accessUsers[i])}
-
                 users[chatData.accessUsers[i]] = userAvatarToken
-                
             }
 
             let resObj = {}
@@ -32,7 +27,6 @@ router.get("/info/:chatId", async (req, res) => {
             resObj.chatId = chatData.chatId
             resObj.type = chatData.type
             resObj.aboutUsers = users
-            console.log(resObj)
             if(DBuserData){
     
                 res.json(resObj);

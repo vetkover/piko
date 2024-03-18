@@ -96,6 +96,29 @@
       .message-body {
         display: flex;
         flex-direction: row;
+        position: relative;
+
+        &:hover{
+          background-color: #ffffff05;
+          .message-control-container{
+            display: flex
+          }
+        }
+
+        .message-control-container{
+          display: none;
+          flex-direction: row;
+          align-items: center;
+          position: absolute;
+
+          top:5px;
+          right: 5px;
+          #deleteIco{
+            width: 15px;
+            height: 15px;
+          }
+        }
+
         #avatar {
           width: 40px;
           height: 40px;

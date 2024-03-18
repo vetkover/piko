@@ -37,14 +37,14 @@ function sendMessageToClient(clientId, message) {
   }
   
 
-function chatUpdate(chatID, updateObj){
+function chatUpdate(chatID, updateObj, option){
     usersInChat = Object.values(wsClients).filter((value) => {
         return value.url === chatID;
     });
+    updateObj.option = option
     usersInChat.map((value, index)=>{
         value.ws.send(JSON.stringify(updateObj))
     })
-    console.log(updateObj);
 }
 
 

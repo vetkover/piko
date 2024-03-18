@@ -2,11 +2,11 @@ import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { getText } from "../../components/languageProcessing/localize";
 import { useNavigate, useParams } from "react-router";
 import "./Chats.scss";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 //import PlayerModule from "../../components/dokoa-player/playerModule";
 
-import avatar404 from "./404avatar.png";
+import deleteIco from'./xIco.svg'
 import sendIco from "./sendIco.svg";
 import socialEmpty from "./socialEmpty.png"
 
@@ -39,12 +39,13 @@ function Chats() {
       })
       .then(response => response.json())
       .then(data => {
+        messageText.current!.innerText =""
       })
       
       .catch(error => console.error('Error:', error));
       
     } else {
-        console.log('Соединение не установлено');
+        console.log('Соединение не установлено или разорвано');
     }
   }
     
@@ -101,17 +102,38 @@ function Chats() {
       }).catch(error => console.error('Error:', error));
     }
 
-      const messageListener = (event: { data: string; }) => {
-        if(activeChat !== undefined){
-        setExampleMessageList((exampleMessageList: any) => [...exampleMessageList, JSON.parse(event.data)]);
-        }
-      };
-       socket.addEventListener('message', messageListener);
-       return () => {
-        socket.removeEventListener('message', messageListener);
-      };
 
   }, [activeChat]);
+
+  useEffect(() => { 
+    
+    const messageListener = (event: { data: string; }) => {
+      const data = JSON.parse(event.data)
+
+      switch(data.option){ 
+
+        case"newMessage":
+        if(activeChat !== undefined){
+          setExampleMessageList((exampleMessageList: any) => [...exampleMessageList, data]);
+          }
+        break;
+
+        case "deleteMessage":
+          if (activeChat !== undefined) {
+            const messageIdToDelete = data.messageId;
+            setExampleMessageList((prevMessages: any) => prevMessages.filter((msg: any) =>{ 
+              return (msg.messageId !== Number(messageIdToDelete))}));
+          }
+          break;
+
+      }
+
+    };
+     socket.addEventListener('message', messageListener);
+     return () => {
+      socket.removeEventListener('message', messageListener);
+    };
+   }, [activeChat,exampleMessageList]);
 
   const messageText = useRef<any>()
 
@@ -133,7 +155,19 @@ function Chats() {
       </div>
     )
   }
-
+function deleteMessage(messageId: number){
+  fetch(`${pikoSelector.api}/api/chats/deletemessage/${activeChat}?messageId=${messageId}`, {
+    method: 'GET', 
+    mode: 'cors', 
+    credentials: 'include', 
+    headers: {
+      'Content-Type': 'application/json' 
+    }
+  })
+  .then(response => response.json())
+  .then(data => {
+  }).catch(error => console.error('Error:', error));
+}
   return (
     <div className="chats-container">
       <div className="left-container">
@@ -170,7 +204,7 @@ function Chats() {
                   <div className="last-message-time"></div>
                 </div>
                 <div className="chat-last-message">
-                  {object.chatLastMessage}
+                  {object.chatLastMessage? object.chatLastMessage: "кажется здесь пусто"}
                 </div>
               </div>
             </div>
@@ -185,11 +219,13 @@ function Chats() {
         <div ref={messageContainer} className="message-container">
           {exampleMessageList.map((object: any) => {
 
+            const isUserMessage = object.author === whoamiSelector.username;
+
             return(
             <div className="message-body" key={object.messageId}>
               <img
                 id="avatar"
-                src={`${pikoSelector.cdn}/${chatData?.aboutUsers[object.author].src}`}
+                src={`${pikoSelector.cdn}/${chatData?.aboutUsers[object.author]?.src}`}
                 onClick={() => {
                   navigate(`/p/${object.author}`);
                 }}
@@ -209,6 +245,12 @@ function Chats() {
 
                 </div>
               </div>
+                  {isUserMessage? 
+                  <div className="message-control-container">
+                    <img id="deleteIco" src={deleteIco} onClick={()=>deleteMessage(object.messageId)}/>
+                  </div>
+                  : <React.Fragment />
+          }
             </div>
 
           )})}

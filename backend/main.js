@@ -28,6 +28,7 @@ const list = require('./api/chats/list.js')
 const send = require('./api/chats/send.js')
 const read = require('./api/chats/read.js')
 const info = require('./api/chats/info.js')
+const deletemessage = require('./api/chats/deletemessage.js')
 
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "http://localhost:3000");
@@ -59,6 +60,7 @@ app.use('/api/chats/', list)
 app.use('/api/chats/', send)
 app.use('/api/chats/', read)
 app.use('/api/chats/', info)
+app.use('/api/chats/', deletemessage)
 
 
 // yggdrasil - data exchange between piko servers
