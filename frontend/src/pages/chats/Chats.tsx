@@ -10,6 +10,14 @@ import deleteIco from'./xIco.svg'
 import sendIco from "./sendIco.svg";
 import socialEmpty from "./socialEmpty.png"
 
+function MessagesIsEmpty(){
+  return(
+    <div className="empty-messages-container">
+      <img src={socialEmpty} />
+      <a>кажется здесь ничего нет</a>
+    </div>
+  )
+}
 
 function Chats() {
   const pikoSelector = useSelector((state: any) => state.pikoset);
@@ -18,14 +26,22 @@ function Chats() {
   const [activeChat, setActiveChat] = useState<any>();
   const navigate = useNavigate();
   const messageContainer = useRef<any>()
-  const socket = new WebSocket(`ws://localhost:8080/chats/${activeChat}`);
+  const [socket, setSocket] = useState<WebSocket | null>(null);
 
-  socket.addEventListener('open', function (event) {
+  useEffect(() => {
+    if(activeChat != undefined){
+    const newSocket = new WebSocket(`ws://localhost:8080/chats/${activeChat}`);
+    setSocket(newSocket);
+    }
+    //return () => newSocket.close();
+  }, [activeChat]);
+
+  socket?.addEventListener('open', function (event) {
     console.log('Соединение установлено');
   });
 
   function sendMessage(message: string) {
-    if (socket.readyState === WebSocket.OPEN) {
+    if (socket?.readyState === WebSocket.OPEN && messageText.current!.innerText != "") {
       fetch(`${pikoSelector.api}/api/chats/send/${activeChat}`, {
         method: 'POST', 
         mode: 'cors', 
@@ -39,13 +55,13 @@ function Chats() {
       })
       .then(response => response.json())
       .then(data => {
-        messageText.current!.innerText =""
+        messageText.current!.innerText = ""
       })
       
       .catch(error => console.error('Error:', error));
       
     } else {
-        console.log('Соединение не установлено или разорвано');
+        console.log('Соединение не установлено или отказано в отправке');
     }
   }
     
@@ -54,6 +70,7 @@ function Chats() {
 
   const [exampleMessageList,setExampleMessageList] = useState<any>([])
   const [chatData, setChatData] = useState<any>()
+  const [updateList, setUpdateList] = useState<any>()
 
   useLayoutEffect(() => {
     messageContainer.current.scrollTop = messageContainer.current.scrollHeight;
@@ -61,6 +78,24 @@ function Chats() {
 
   useEffect(() => {
 
+    if(activeChat !== undefined){
+      fetch(`${pikoSelector.api}/api/chats/info/${activeChat}`, {
+        method: 'GET', 
+        mode: 'cors', 
+        credentials: 'include', 
+        headers: {
+          'Content-Type': 'application/json' 
+        }
+      })
+      .then(response => response.json())
+      .then(data => {
+        setChatData(data);
+      }).catch(error => console.error('Error:', error));
+    }
+
+  }, [activeChat]);
+
+  useEffect(()=> {
     fetch(`${pikoSelector.api}/api/chats/list`, {
       method: 'GET', 
       mode: 'cors', 
@@ -86,24 +121,8 @@ function Chats() {
     .then(data => {
       setExampleMessageList(data);
     }).catch(error => console.error('Error:', error));
+  },[activeChat])
 
-    if(activeChat !== undefined){
-      fetch(`${pikoSelector.api}/api/chats/info/${activeChat}`, {
-        method: 'GET', 
-        mode: 'cors', 
-        credentials: 'include', 
-        headers: {
-          'Content-Type': 'application/json' 
-        }
-      })
-      .then(response => response.json())
-      .then(data => {
-        setChatData(data);
-      }).catch(error => console.error('Error:', error));
-    }
-
-
-  }, [activeChat]);
 
   useEffect(() => { 
     
@@ -111,9 +130,9 @@ function Chats() {
       const data = JSON.parse(event.data)
 
       switch(data.option){ 
-
         case"newMessage":
         if(activeChat !== undefined){
+          setUpdateList((updateList: any) => (updateList + 1))
           setExampleMessageList((exampleMessageList: any) => [...exampleMessageList, data]);
           }
         break;
@@ -121,6 +140,7 @@ function Chats() {
         case "deleteMessage":
           if (activeChat !== undefined) {
             const messageIdToDelete = data.messageId;
+            setUpdateList((updateList: any) => (updateList + 1))
             setExampleMessageList((prevMessages: any) => prevMessages.filter((msg: any) =>{ 
               return (msg.messageId !== Number(messageIdToDelete))}));
           }
@@ -129,11 +149,11 @@ function Chats() {
       }
 
     };
-     socket.addEventListener('message', messageListener);
+     socket?.addEventListener('message', messageListener);
      return () => {
-      socket.removeEventListener('message', messageListener);
+      socket?.removeEventListener('message', messageListener);
     };
-   }, [activeChat,exampleMessageList]);
+   }, [activeChat,exampleMessageList, ]);
 
   const messageText = useRef<any>()
 
@@ -147,14 +167,7 @@ function Chats() {
     return { formattedDate, formattedTime };
   }
 
-  function MessagesIsEmpty(){
-    return(
-      <div className="empty-messages-container">
-        <img src={socialEmpty} />
-        <a>кажется здесь ничего нет</a>
-      </div>
-    )
-  }
+
 function deleteMessage(messageId: number){
   fetch(`${pikoSelector.api}/api/chats/deletemessage/${activeChat}?messageId=${messageId}`, {
     method: 'GET', 

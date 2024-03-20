@@ -15,7 +15,7 @@ router.get("/list", async (req, res) => {
 
             for (let i = 0; i < DBuserData.chats.length; i++) {
                 let chatDB = await chatInfo(DBuserData.chats[i]);
-                let lastActiveMessage = chatDB.messages.slice().reverse().find(msg => msg.status === 'active');
+                let lastActiveMessage = chatDB.messages.reverse().find(msg => msg.status === 'active');
 
                 let pushObj = {
                     chatId: chatDB.chatId,
