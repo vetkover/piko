@@ -70,7 +70,6 @@ function Chats() {
 
   const [exampleMessageList,setExampleMessageList] = useState<any>([])
   const [chatData, setChatData] = useState<any>()
-  const [updateList, setUpdateList] = useState<any>()
 
   useLayoutEffect(() => {
     messageContainer.current.scrollTop = messageContainer.current.scrollHeight;
@@ -132,7 +131,6 @@ function Chats() {
       switch(data.option){ 
         case"newMessage":
         if(activeChat !== undefined){
-          setUpdateList((updateList: any) => (updateList + 1))
           setExampleMessageList((exampleMessageList: any) => [...exampleMessageList, data]);
           }
         break;
@@ -140,7 +138,6 @@ function Chats() {
         case "deleteMessage":
           if (activeChat !== undefined) {
             const messageIdToDelete = data.messageId;
-            setUpdateList((updateList: any) => (updateList + 1))
             setExampleMessageList((prevMessages: any) => prevMessages.filter((msg: any) =>{ 
               return (msg.messageId !== Number(messageIdToDelete))}));
           }
@@ -153,7 +150,7 @@ function Chats() {
      return () => {
       socket?.removeEventListener('message', messageListener);
     };
-   }, [activeChat,exampleMessageList, ]);
+   }, [activeChat,exampleMessageList ]);
 
   const messageText = useRef<any>()
 
