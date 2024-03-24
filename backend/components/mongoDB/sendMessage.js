@@ -1,6 +1,6 @@
 const mongo = require('./mongo.js');
 
-async function sendMessage(chatId, text, author) {
+async function sendMessage(chatId, body, author) {
 
     try {
         const chat = await mongo.db('piko').collection('chats').findOne({ "chatId": Number(chatId) });
@@ -8,7 +8,8 @@ async function sendMessage(chatId, text, author) {
 
         let messageObj = {
           createTime: Date.now(),
-          text: text,
+          text: body.text,
+          replyId: body.replyId,
           author: author,
           messageId: currentMessageCount + 1,
           status: "active"

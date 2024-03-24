@@ -9,6 +9,7 @@ import { useSelector } from "react-redux";
 import deleteIco from'./xIco.svg'
 import sendIco from "./sendIco.svg";
 import socialEmpty from "./socialEmpty.png"
+import answerIco from './answerIco.svg'
 
 function MessagesIsEmpty(){
   return(
@@ -40,7 +41,8 @@ function Chats() {
     console.log('Соединение установлено');
   });
 
-  function sendMessage(message: string) {
+  function sendMessage(message: any) {
+    setReplyObj(undefined)
     if (socket?.readyState === WebSocket.OPEN && messageText.current!.innerText != "") {
       fetch(`${pikoSelector.api}/api/chats/send/${activeChat}`, {
         method: 'POST', 
@@ -50,7 +52,8 @@ function Chats() {
           'Content-Type': 'application/json' 
         },
         body: JSON.stringify({
-          text: message 
+          text: message.text,
+          replyId: message.replyId 
         })
       })
       .then(response => response.json())
@@ -178,6 +181,39 @@ function deleteMessage(messageId: number){
   .then(data => {
   }).catch(error => console.error('Error:', error));
 }
+
+const [replyObj, setReplyObj] = useState<any>()
+const replyContainer = useRef<any>()
+
+
+function answerOnMessage(object: any){
+  setReplyObj(object)
+}
+
+function ReplyContainer(){
+  
+  if(replyObj != undefined){
+
+    return(
+      <div ref={replyContainer} className="reply-container">
+        <div className="answer-decor">
+          <img id="answerIco" src={answerIco} />
+          <div className="border-colorline" />
+      </div>
+        <div className="anser-message">
+          <div className="user-to-reply"> {replyObj.author}</div>
+          <div className="text-from-reply-message" > {replyObj.text}</div>
+      </div>
+      <div className="answer-close">
+        <img id="cancel-button" src={deleteIco} onClick={()=> {setReplyObj(undefined)}}/>
+      </div>
+    </div>
+    )
+  } else {
+    return <React.Fragment />
+  }
+}
+
   return (
     <div className="chats-container">
       <div className="left-container">
@@ -230,7 +266,6 @@ function deleteMessage(messageId: number){
           {exampleMessageList.map((object: any) => {
 
             const isUserMessage = object.author === whoamiSelector.username;
-
             return(
             <div className="message-body" key={object.messageId}>
               <img
@@ -242,10 +277,26 @@ function deleteMessage(messageId: number){
               />
 
               <div id="content">
+
+
+
                 <div className="info">
                   <div className="author">{object.author}</div>
                   <div className="time"> {convertUnixTime(object.createTime).formattedDate} {convertUnixTime(object.createTime).formattedTime} </div>
                 </div>
+
+                {object?.answerMessage?.status?
+
+                  <div className="answer-body"> 
+                    <div className="line"/>
+                    <div className="answer-message">
+                      <div className="answer-author" >{object.answerMessage.anAuthor} </div>
+                      <div className="answer-text" >{object.answerMessage.anText} </div>
+                    </div>
+                  </div>
+
+                  : <React.Fragment />}
+
                 <div className="message-data">
 
                   {(() => {
@@ -255,23 +306,36 @@ function deleteMessage(messageId: number){
 
                 </div>
               </div>
-                  {isUserMessage? 
+
                   <div className="message-control-container">
+                    
+                  {isUserMessage? 
                     <img id="deleteIco" src={deleteIco} onClick={()=>deleteMessage(object.messageId)}/>
+                    : <React.Fragment />}
+                    <img id="answerIco" src={answerIco} onClick={()=>answerOnMessage(object)}/>
                   </div>
-                  : <React.Fragment />
-          }
+                  
+          
             </div>
 
           )})}
         </div>
 
         <div className="message-input-container">
+
+          <ReplyContainer />
+
           <div className="message-top-container">
             <div id="input" placeholder="input message" ref={messageText} contentEditable></div>
             <div className="send-message-button">
-              <img src={sendIco} onClick={()=>sendMessage(messageText.current!.innerText)}/>
-            </div>
+              <img src={sendIco} onClick={() => {
+              const message = {
+                text: messageText.current.innerText,
+                replyId: replyObj?.messageId
+              };
+             sendMessage(message);
+            }}/>
+          </div>
 
           </div>
         </div>

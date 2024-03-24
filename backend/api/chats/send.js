@@ -21,6 +21,7 @@ router.post("/send/:chatId", async (req, res) => {
             createTime: Date.now(),
             text: body.text,
             messageId: 0,
+            replyId: body.replyId? body.replyId : null,
             images: [],
             videos: [],
             sounds: [],
@@ -28,7 +29,7 @@ router.post("/send/:chatId", async (req, res) => {
 
         if(DBuserData){
             if(await chatMember(chatId,DBuserData.username)){
-            messageObj.messageId = (await sendMessage(chatId, body.text, DBuserData.username)).messageId
+            messageObj.messageId = (await sendMessage(chatId, body, DBuserData.username)).messageId
             chatUpdate(`/chats/${chatId}`, messageObj, "newMessage")
             res.json(true);
             }

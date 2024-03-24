@@ -2,6 +2,7 @@ const WebSocket = require('ws');
 const wss = new WebSocket.Server({ port: 8080 });
 const parseCookies = require('../stuff/cookieReader')
 const whoami = require('../stuff/whoami');
+const readMessageByID = require('../../components/mongoDB/readMessageByID.js')
 
 const wsClients = [];
 
@@ -37,11 +38,21 @@ function sendMessageToClient(clientId, message) {
   }
   
 
-function chatUpdate(chatID, updateObj, option){
+async function chatUpdate(chatID, updateObj, option){
     usersInChat = Object.values(wsClients).filter((value) => {
         return value.url === chatID;
     });
     updateObj.option = option
+    if(updateObj.replyId != undefined){
+      let answerMessageData = await readMessageByID(chatID.split('/')[2], updateObj.replyId)
+      let answerMessage = {
+        status: answerMessageData.status === "active"? true : false,
+        anAuthor: answerMessageData.author,
+        anText: answerMessageData.text
+    }
+    updateObj.answerMessage = answerMessage
+    }
+
     usersInChat.map((value, index)=>{
         value.ws.send(JSON.stringify(updateObj))
     })
