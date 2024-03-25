@@ -110,12 +110,16 @@
           flex-direction: row;
           align-items: center;
           position: absolute;
-
           top: 5px;
           right: 5px;
+
           #deleteIco {
             width: 15px;
             height: 15px;
+          }
+          #editIco {
+            width: 22px;
+            height: 20px;
           }
           #answerIco {
             width: 22px;
