@@ -43,8 +43,8 @@ function Chats() {
   });
 
   function sendMessage(message: any) {
-    setSelectObj(undefined)
-    if (socket?.readyState === WebSocket.OPEN && messageText.current!.innerText != "") {
+    
+    if (socket?.readyState === WebSocket.OPEN && messageText.current!.innerText != "" && selectObj.action === undefined) {
       fetch(`${pikoSelector.api}/api/chats/send/${activeChat}`, {
         method: 'POST', 
         mode: 'cors', 
@@ -67,6 +67,30 @@ function Chats() {
     } else {
         console.log('Соединение не установлено или отказано в отправке');
     }
+
+    if (socket?.readyState === WebSocket.OPEN && messageText.current!.innerText != "" && selectObj.action === "edit") {
+      console.log(selectObj)
+      fetch(`${pikoSelector.api}/api/chats/send/${activeChat}?messageId=${selectObj.messageId}`, {
+        method: 'PATCH', 
+        mode: 'cors', 
+        credentials: 'include', 
+        headers: {
+          'Content-Type': 'application/json' 
+        },
+        body: JSON.stringify({
+          text: message.text
+        })
+      })
+      .then(response => response.json())
+      .then(data => {
+        messageText.current!.innerText = ""
+      })
+      
+      .catch(error => console.error('Error:', error));
+      
+    }
+
+    setSelectObj(undefined)
   }
     
 
@@ -186,20 +210,37 @@ function deleteMessage(messageId: number){
 const [selectObj, setSelectObj] = useState<any>()
 const replyContainer = useRef<any>()
 
+function answerOnMessage(object: any){
+    object.action = "answer"
+    setSelectObj(object)
+  }
 
-function answerOnMessage(object: any,){
-  object.action = "answer"
-  setSelectObj(object)
-}
+  function editMessage(object: any){
+    object.action = "edit"
+    setSelectObj(object)
+  }
 
 function ReplyContainer(){
   
   if(selectObj != undefined){
+    let icoAction;
+
+    switch(selectObj.action){
+
+      case"answer":
+        icoAction = answerIco
+      break;
+
+      case "edit":
+        icoAction = editIco
+      break;
+
+    }
 
     return(
       <div ref={replyContainer} className="reply-container">
         <div className="answer-decor">
-          <img id="answerIco" src={answerIco} />
+          <img id="answerIco" src={icoAction} />
           <div className="border-colorline" />
       </div>
         <div className="anser-message">
@@ -307,7 +348,7 @@ function ReplyContainer(){
                   {isUserMessage? 
                     <React.Fragment >
                       <img id="deleteIco" src={deleteIco} onClick={()=>deleteMessage(object.messageId)}/>
-                      <img id="editIco" src={editIco} />
+                      <img id="editIco" src={editIco} onClick={()=>editMessage(object)} />
                     </React.Fragment>
 
                     : <React.Fragment />}
@@ -327,7 +368,7 @@ function ReplyContainer(){
               <img src={sendIco} onClick={() => {
               const message = {
                 text: messageText.current.innerText,
-                replyId: selectObj.action === "answer"? selectObj?.messageId : null
+                replyId: selectObj?.action === "answer"? selectObj?.messageId : null
               };
              sendMessage(message);
             }}/>
