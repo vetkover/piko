@@ -4,7 +4,7 @@ async function readMessageByID(chatId, messageId) {
   try {
     const chatDocument = await mongo.db('piko').collection('chats').findOne({ "chatId": Number(chatId) });
     if (chatDocument && chatDocument.messages) {
-      const filteredMessages = chatDocument.messages.filter(message => message.messageId === messageId);
+      const filteredMessages = chatDocument.messages.filter((message) => message.messageId == messageId);
       return filteredMessages[0];
     }
     return null;
