@@ -7,7 +7,8 @@ async function editMessage(chatId, messageId, newText) {
             { "chatId": Number(chatId), "messages.messageId": Number(messageId) },
             {
                 $set: {
-                    "messages.$.text": newText
+                    "messages.$.text": newText,
+                    "messages.$.edit": true
                 }
             }
         );

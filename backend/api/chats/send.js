@@ -24,6 +24,7 @@ router.post("/send/:chatId", async (req, res) => {
             text: body.text,
             messageId: 0,
             replyId: body.replyId? body.replyId : null,
+            edit: false,
             images: [],
             videos: [],
             sounds: [],
@@ -53,7 +54,7 @@ router.patch("/send/:chatId", async (req, res) => {
 
         if(DBuserData){
             const messageBeforeEditing = await readMessageByID(chatId, messageId)
-            if(await chatMember(chatId,DBuserData.username)){
+            if(await chatMember(chatId,DBuserData.username) && messageBeforeEditing.author === DBuserData.username){
             await editMessage(chatId, messageId, body.text)
 
             let messageObj = {
@@ -62,6 +63,7 @@ router.patch("/send/:chatId", async (req, res) => {
                 text: body.text,
                 messageId: messageBeforeEditing.messageId,
                 replyId: messageBeforeEditing.replyId? messageBeforeEditing.replyId : null,
+                edit: true,
                 images: [],
                 videos: [],
                 sounds: [],

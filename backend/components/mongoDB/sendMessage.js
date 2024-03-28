@@ -10,6 +10,7 @@ async function sendMessage(chatId, body, author) {
           createTime: Date.now(),
           text: body.text,
           replyId: body.replyId,
+          edit: false,
           author: author,
           messageId: currentMessageCount + 1,
           status: "active"
@@ -24,7 +25,6 @@ async function sendMessage(chatId, body, author) {
                 }   
             }
         );
-
         return messageObj;
     } catch (error) {
         console.error('Ошибка при отправке сообщения:', error);

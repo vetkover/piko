@@ -6,6 +6,7 @@ const userData = require('../../components/mongoDB/userData.js')
 const deleteMessage = require('../../components/mongoDB/deleteMessage.js')
 const chatMember = require('../../components/mongoDB/chatMember.js')
 const chatUpdate = require('../../components/websocket/ws.js')
+const readMessageByID = require("../../components/mongoDB/readMessageByID.js");
 
 router.get("/deletemessage/:chatId", async (req, res) => {
     let chatId = req.params.chatId; 
@@ -19,7 +20,8 @@ router.get("/deletemessage/:chatId", async (req, res) => {
         }
 
         if(DBuserData){
-            if(await chatMember(chatId,DBuserData.username)){
+            const targetMessage = await readMessageByID(chatId, messageId)
+            if(await chatMember(chatId,DBuserData.username) && targetMessage.author === DBuserData.username){
                 deleteMessage(chatId, messageId)
             chatUpdate(`/chats/${chatId}`, resObj, "deleteMessage")
             res.json(true);

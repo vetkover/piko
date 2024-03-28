@@ -28,7 +28,7 @@ const list = require('./api/chats/list.js')
 const send = require('./api/chats/send.js')
 const read = require('./api/chats/read.js')
 const info = require('./api/chats/info.js')
-const deletemessage = require('./api/chats/deletemessage.js')
+const deletemessage = require('./api/chats/delete.js')
 
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "http://localhost:3000");

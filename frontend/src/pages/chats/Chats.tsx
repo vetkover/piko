@@ -44,7 +44,7 @@ function Chats() {
 
   function sendMessage(message: any) {
     
-    if (socket?.readyState === WebSocket.OPEN && messageText.current!.innerText != "" && selectObj.action === undefined) {
+    if (socket?.readyState === WebSocket.OPEN && messageText.current!.innerText != "" && (selectObj?.action === undefined || selectObj?.action === "answer" )) {
       fetch(`${pikoSelector.api}/api/chats/send/${activeChat}`, {
         method: 'POST', 
         mode: 'cors', 
@@ -64,12 +64,9 @@ function Chats() {
       
       .catch(error => console.error('Error:', error));
       
-    } else {
-        console.log('Соединение не установлено или отказано в отправке');
-    }
+    } 
 
-    if (socket?.readyState === WebSocket.OPEN && messageText.current!.innerText != "" && selectObj.action === "edit") {
-      console.log(selectObj)
+    else if (socket?.readyState === WebSocket.OPEN && messageText.current!.innerText != "" && selectObj?.action === "edit") {
       fetch(`${pikoSelector.api}/api/chats/send/${activeChat}?messageId=${selectObj.messageId}`, {
         method: 'PATCH', 
         mode: 'cors', 
@@ -88,7 +85,9 @@ function Chats() {
       
       .catch(error => console.error('Error:', error));
       
-    }
+    } else {
+      console.log('Соединение не установлено или отказано в отправке');
+  }
 
     setSelectObj(undefined)
   }
@@ -150,7 +149,7 @@ function Chats() {
     }).catch(error => console.error('Error:', error));
   },[activeChat])
 
-
+console.log(exampleMessageList)
   useEffect(() => { 
     
     const messageListener = (event: { data: string; }) => {
@@ -170,6 +169,18 @@ function Chats() {
               return (msg.messageId !== Number(messageIdToDelete))}));
           }
           break;
+
+          case "editMessage":
+            if (activeChat !== undefined) {
+              const messageIdToUpdate = data.messageId;
+              setExampleMessageList((prevMessages: any) => prevMessages.map((msg: any) => {
+                if (msg.messageId === messageIdToUpdate) {
+                  return { ...msg, text: data.text, edit: true };
+                }
+                return msg;
+              }));
+            }
+            break;
 
       }
 
@@ -322,6 +333,8 @@ function ReplyContainer(){
                 <div className="info">
                   <div className="author">{object.author}</div>
                   <div className="time"> {convertUnixTime(object.createTime).formattedDate} {convertUnixTime(object.createTime).formattedTime} </div>
+                  {object?.edit? <img src={editIco} className="edit" />
+                   : <React.Fragment />}
                 </div>
 
                 {object?.answerMessage?.status?
